@@ -1,4 +1,4 @@
-PUPPETMASTER = 'root'
+PUPPETMASTER = 'linode'
 SSH = 'ssh -t -A'
 
 task :deploy do
