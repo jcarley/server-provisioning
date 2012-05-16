@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# this will always be called.
 sudo apt-get update
 
 if [ ! $(which git) ]; then
