@@ -26,7 +26,7 @@ if [ $(id -u) -eq 0 ]; then
   egrep "^deployer" /etc/passwd > /dev/null
   if [ $? -ne 0 ]; then
     # user does not exist, so add
-    sudo useradd -m --comment "Deployer" --shell /bin/bash --ingroup admin deployer
+    sudo useradd -m --comment "Deployer" --shell /bin/bash --groups admin deployer
     sudo passwd deployer
   fi
 
