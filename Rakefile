@@ -8,6 +8,10 @@ task :deploy do
   sh "#{SSH} #{PUPPETMASTER} 'cd ~/puppet && sudo git pull'"
 end
 
+task :baseline => [:deploy] do
+  sh "#{SSH} #{CLIENT} 'cd ~/puppet && sudo ./base-line.sh'"
+end
+
 # Test changes on client machine
 task :apply => [:deploy] do
   sh "#{SSH} #{CLIENT} 'cd ~/puppet && sudo puppet agent --test'" do |ok, status|
