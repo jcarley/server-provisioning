@@ -9,7 +9,7 @@ task :deploy do
 end
 
 task :baseline => [:deploy] do
-  sh "#{SSH} #{CLIENT} 'cd ~/puppet && sudo ./base-line.sh'"
+  sh "#{SSH} #{CLIENT} 'cd ~/puppet && base-line.sh | bash'"
 end
 
 # Test changes on client machine
