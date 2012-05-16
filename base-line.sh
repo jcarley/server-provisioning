@@ -42,11 +42,11 @@ if [ $(id -u) -eq 0 ]; then
 
   # change to deployer user
   echo "Switching to deployer user."
-  su deployer
+  sudo su deployer
 
   RBENV_ROOT="$HOME/.rbenv"
 
-  echo "Install rbenv at $RBENV_ROOT"
+  echo "Installing rbenv at $RBENV_ROOT"
 
   if [ ! -d "$RBENV_ROOT" ] ; then
     # check for, and install rbenv
