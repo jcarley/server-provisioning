@@ -49,6 +49,10 @@ if [ $(id -u) -eq 0 ]; then
   echo "Installing rbenv at $RBENV_ROOT"
 
   if [ ! -d "$RBENV_ROOT" ] ; then
+
+    echo "changing directory to $HOME"
+    cd $HOME
+
     # check for, and install rbenv
     #curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
 
