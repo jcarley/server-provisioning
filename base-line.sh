@@ -3,7 +3,7 @@
 if [ $(id -u) -eq 0 ]; then
 
   # this will always be called.
-  sudo apt-get update
+  #sudo apt-get update
 
   if [ ! $(which git) ]; then
     sudo apt-get install -y git-core
