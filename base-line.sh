@@ -44,6 +44,6 @@ if [ $(id -u) -eq 0 ]; then
   echo "Switching to deployer user."
   su deployer -c ./install-rbenv.sh
 
+  su root -c ./install-rbenv.sh
 fi
-
 
