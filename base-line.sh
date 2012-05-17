@@ -40,10 +40,13 @@ if [ $(id -u) -eq 0 ]; then
     echo "User deployer already exists."
   fi
 
+  #we have to install rbenv for root first, it'll install build essentials
+  echo "Installing rbenv for root"
+  su root -c ./install-rbenv.sh
+
   # change to deployer user
-  echo "Switching to deployer user."
+  echo "Installing rbenv for deployer"
   su deployer -c ./install-rbenv.sh
 
-  su root -c ./install-rbenv.sh
 fi
 

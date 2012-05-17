@@ -33,9 +33,11 @@ addrbenvtoloadpath() {
 }
 
 bootstrapserver() {
-  echo "Installing server build essentials."
-  # install some server essentials
-  rbenv bootstrap-ubuntu-11-10
+  if [ $(id -u) -eq 0 ]; then
+    echo "Installing server build essentials."
+    # install some server essentials
+    rbenv bootstrap-ubuntu-11-10
+  fi
 }
 
 installruby() {
