@@ -5,9 +5,6 @@ installrbenv() {
 
     echo "Installing rbenv at $RBENV_ROOT"
 
-    echo "changing directory to $HOME"
-    cd $HOME
-
     # check for, and install rbenv
     curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
   fi
@@ -61,6 +58,9 @@ installruby() {
 }
 
 echo "Provisioning server with rbenv"
+echo "Changing directory to $HOME"
+
+cd $HOME
 
 installrbenv
 addrbenvtoloadpath
