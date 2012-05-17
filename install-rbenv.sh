@@ -20,8 +20,8 @@ if [ ! -d "$RBENV_ROOT" ] ; then
   echo "  export PATH=\"\$HOME/.rbenv/bin:\$PATH\"" >> bashrc.tmp
   echo "  eval \"\$(rbenv init -)\"" >> bashrc.tmp
   echo "fi" >> bashrc.tmp
-  cat .bashrc >> .bashrc.tmp
-  mv .bashrc.tmp .bashrc
+  cat .bashrc >> bashrc.tmp
+  mv bashrc.tmp .bashrc
 
   # source .bashrc
   #source ~/.bashrc
