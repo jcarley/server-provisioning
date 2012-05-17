@@ -1,4 +1,4 @@
-node "428-47.members.linode.com" {
+node "li428-47.members.linode.com" {
   include nginx
 }
 
