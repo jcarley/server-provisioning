@@ -8,7 +8,7 @@ if [ ! -d "$RBENV_ROOT" ] ; then
   cd $HOME
 
   # check for, and install rbenv
-  #curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
+  curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
 
   # take a backup of .bashrc
   echo "Making a backup of the .bashrc"
@@ -24,20 +24,18 @@ if [ ! -d "$RBENV_ROOT" ] ; then
   mv bashrc.tmp .bashrc
 
   # source .bashrc
-  #source ~/.bashrc
+  source ~/.bashrc
 
   # install some server essentials
-  #rbenv bootstrap-ubuntu-11-10
+  rbenv bootstrap-ubuntu-11-10
 
   # install ruby
-  #rbenv install 1.9.3-p125
+  rbenv install 1.9.3-p125
 
   # set 1.9.3 as our global ruby
-  #rbenv global 1.9.3-p125
+  rbenv global 1.9.3-p125
 
   # install gems
-  #rbenv bootstrap
+  rbenv bootstrap
 
-  # install bundler
-  #gem install bundler --no-ri --no-rdoc
 fi
