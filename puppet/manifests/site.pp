@@ -8,4 +8,4 @@ exec { "apt-update" :
 }
 Exec["apt-update"] -> Package <| |>
 
-include nginx
+import "nodes.pp"
