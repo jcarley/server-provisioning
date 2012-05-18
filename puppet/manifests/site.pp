@@ -9,15 +9,3 @@ exec { "apt-update" :
 Exec["apt-update"] -> Package <| |>
 
 include nginx
-
-# import "nodes.pp"
-
-# package { "openjdk-6-jdk" :
-#   ensure => present
-# }
-
-# include jruby
-
-# include apache2
-
-# include postgres
