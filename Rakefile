@@ -26,5 +26,5 @@ end
 
 # See the changes puppet would make, but don't actually change anything
 task :noop => [:deploy] do
-  sh "#{SSH} #{CLIENT} 'cd sudo puppet agent --test --noop'"
+  sh "#{SSH} #{CLIENT} 'sudo puppet agent --test --noop'"
 end
