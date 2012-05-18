@@ -8,7 +8,9 @@ exec { "apt-update" :
 }
 Exec["apt-update"] -> Package <| |>
 
-import "nodes.pp"
+include nginx
+
+# import "nodes.pp"
 
 # package { "openjdk-6-jdk" :
 #   ensure => present
