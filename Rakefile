@@ -5,7 +5,7 @@ SSH = 'ssh -t -A'
 # Checkin code to github, and deploy to puppet master machine (in this case its also the client)
 task :deploy do
   sh "git push origin master"
-  sh "#{SSH} #{PUPPETMASTER} 'cd ~/puppet && sudo git pull'"
+  sh "#{SSH} #{PUPPETMASTER} 'cd ~/puppet && sudo git pull && sudo rsync -r puppet/ /etc/puppet/'"
 end
 
 task :baseline => [:deploy] do
