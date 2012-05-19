@@ -36,4 +36,5 @@ file "#{node[:nginx][:dir]}/sites-available/example" do
   content "server { root /home/apps/#{node[:user][:name]}/example; }"
 end
 
+include_recipe "nginx::source"
 nginx_site "example"
