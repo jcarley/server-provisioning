@@ -5,13 +5,14 @@ task :bootstrap do
   sh "#{SSH} #{TARGET} 'curl -L https://raw.github.com/jcarley/server-provisioning/master/chef-solo-bootstrap.sh | bash'"
 end
 
-task :provision do
-end
-
 # Checkin code to github, and deploy to puppet master machine (in this case its also the client)
 task :deploy do
-  sh "git push origin chef-solo"
-  sh "#{SSH} #{TARGET} 'cd /var/chef && git pull origin chef-solo'"
+  sh "git push origin master"
+  sh "#{SSH} #{TARGET} 'cd /var/chef && git pull origin master'"
+end
+
+task :provision => [:deploy] do
+  sh "#{SSH} #{TARGET} 'cd /var/chef && chef-solo -c solo.rb'"
 end
 
 # Test changes on client machine
