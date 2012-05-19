@@ -3,6 +3,5 @@
     "name": "deployer",
     "password": "$1$W1JzXW9x$hdDhZFx4XYDEPNxLp4Q4H0"
   },
-  "recipes": ["nginx"],
-  "run_list":["recipe[main]"]
+  "run_list":["recipe[main, nginx]"]
 }
