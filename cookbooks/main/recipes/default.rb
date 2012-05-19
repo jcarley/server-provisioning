@@ -7,8 +7,6 @@ directory "/var/chef/cache" do
   action :create
 end
 
-include_recipe "nginx::source"
-
 group "admin" do
 end
 
