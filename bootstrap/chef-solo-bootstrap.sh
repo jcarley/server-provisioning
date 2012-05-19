@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 apt-get -y update
-apt-get -y install build-essential zlib1g-dev libssl-dev libreadline-gplv2-dev libyaml-dev
+apt-get -y install build-essential zlib1g-dev libssl-dev libreadline-gplv2-dev libyaml-dev git-core python-software-properties
 cd /tmp
 wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz 
 tar -xvzf ruby-1.9.3-p194.tar.gz
@@ -10,5 +10,5 @@ make
 make install
 gem install chef ruby-shadow --no-ri --no-rdoc
 cd /var
-git clone git@github.com:jcarley/server-provisioning.git chef
+git clone git://github.com/jcarley/server-provisioning.git chef
 
