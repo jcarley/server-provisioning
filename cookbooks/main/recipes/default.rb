@@ -1,6 +1,11 @@
 package "zsh"
 
-include_recipe "nginx::source"
+directory "/var/chef/cache" do
+  owner "root"
+  group "root"
+  mode "755"
+  action :create
+end
 
 group "admin" do
 end
@@ -17,3 +22,5 @@ template "/home/#{node[:user][:name]}/.zshrc" do
   source "zshrc.erb"
   owner node[:user][:name]
 end
+
+include_recipe "nginx::source"
