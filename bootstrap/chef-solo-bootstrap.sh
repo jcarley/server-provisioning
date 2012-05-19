@@ -9,3 +9,6 @@ cd ruby-1.9.3-p194/
 make
 make install
 gem install chef ruby-shadow --no-ri --no-rdoc
+cd /var
+git clone git@github.com:jcarley/server-provisioning.git chef
+
