@@ -25,3 +25,17 @@ template "/home/#{node[:user][:name]}/.zshrc" do
   owner node[:user][:name]
 end
 
+directory "/home/apps/#{node[:user][:name]}/example" do
+  owner node[:user][:name]
+end
+
+file "/home/apps/#{node[:user][:name]}/example/index.html" do
+  owner node[:user][:name]
+  content "<h1>Hello World!</h1>"
+end
+
+file "#{node[:nginx][:dir]}/sites-available/example" do
+  content "server { root /home/apps/#{node[:user][:name]}/example; }"
+end
+
+nginx_site "example"
