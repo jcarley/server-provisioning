@@ -1,5 +1,7 @@
 package "zsh"
 
+include_recipe "nginx::source"
+
 group "admin" do
 end
 
