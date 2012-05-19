@@ -7,6 +7,8 @@ directory "/var/chef/cache" do
   action :create
 end
 
+include_recipe "nginx::source"
+
 group "admin" do
 end
 
@@ -23,4 +25,3 @@ template "/home/#{node[:user][:name]}/.zshrc" do
   owner node[:user][:name]
 end
 
-include_recipe "nginx::source"
