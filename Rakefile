@@ -2,7 +2,7 @@ TARGET = 'linode'
 SSH = 'ssh -t -A'
 
 task :baseline do
-  sh "#{SSH} #{TARGET} 'curl -L https://raw.github.com/jcarley/server-provisioning/chef-solo/ruby-installer.sh | bash'"
+  sh "#{SSH} #{TARGET} 'curl -L https://raw.github.com/jcarley/server-provisioning/chef-solo/chef-solo-bootstrap.sh | bash'"
 end
 
 # Checkin code to github, and deploy to puppet master machine (in this case its also the client)
