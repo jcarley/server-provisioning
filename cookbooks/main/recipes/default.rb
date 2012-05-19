@@ -8,7 +8,7 @@ user node[:user][:name] do
   gid "admin"
   home "/home/#{node[:user][:name]}"
   supports manage_home: true
-  shell "/bin/zsh"
+  shell "/usr/bin/zsh"
 end
 
 template "/home/#{node[:user][:name]}/.zshrc" do
