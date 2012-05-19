@@ -2,7 +2,7 @@ TARGET = 'linode'
 SSH = 'ssh -t -A'
 
 task :bootstrap do
-  sh "#{SSH} #{TARGET} 'curl -L https://raw.github.com/jcarley/server-provisioning/chef-solo/chef-solo-bootstrap.sh | bash'"
+  sh "#{SSH} #{TARGET} 'curl -L https://raw.github.com/jcarley/server-provisioning/master/chef-solo-bootstrap.sh | bash'"
 end
 
 task :provision do
