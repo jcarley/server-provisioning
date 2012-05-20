@@ -2,7 +2,7 @@ TARGET = 'linode'
 SSH = 'ssh -t -A'
 
 task :bootstrap do
-  sh "#{SSH} #{TARGET} 'curl -L https://raw.github.com/jcarley/server-provisioning/master/server-bootstrap.sh | bash'"
+  sh "#{SSH} #{TARGET} 'curl -L https://raw.github.com/jcarley/server-provisioning/master/bootstrap/server-bootstrap.sh | bash'"
 end
 
 # Checkin code to github, and deploy to puppet master machine (in this case its also the client)
