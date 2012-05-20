@@ -1,11 +1,11 @@
 package "zsh"
 
-directory "/var/chef/cache" do
-  owner "root"
-  group "root"
-  mode "755"
-  action :create
-end
+#directory "/var/chef/cache" do
+  #owner "root"
+  #group "root"
+  #mode "755"
+  #action :create
+#end
 
 group "admin" do
 end
@@ -25,6 +25,7 @@ end
 
 directory "/home/#{node[:user][:name]}/apps/example" do
   owner node[:user][:name]
+  recursive true
 end
 
 file "/home/#{node[:user][:name]}/apps/example/index.html" do
