@@ -49,3 +49,4 @@ echo "Installing rbenv for deployer"
 su deployer -c "curl -L https://raw.github.com/jcarley/server-provisioning/master/bootstrap/install-rbenv.sh | bash"
 
 service nginx start
+
