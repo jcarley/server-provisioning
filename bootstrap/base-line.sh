@@ -44,7 +44,7 @@ if [ $(id -u) -eq 0 ]; then
   echo "Installing rbenv for root"
   su root -c ./install-rbenv.sh
 
-  # change to deployer user
+  # install rbenv and ruby for deployer user 
   echo "Installing rbenv for deployer"
   su deployer -c ./install-rbenv.sh
 
