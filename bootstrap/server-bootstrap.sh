@@ -27,8 +27,6 @@ apt-get install postfix
 # install node.js
 apt-get -y install nodejs
 
-service nginx start
-
 # add the admin group
 if [ ! $(cat /etc/group | cut -d: -f1 | grep "^admin$") ]; then
   sudo groupadd admin
@@ -48,4 +46,6 @@ fi
 
 # install rbenv and ruby for deployer user 
 echo "Installing rbenv for deployer"
-su deployer -c ./install-rbenv.sh
+su deployer -c "curl -L https://raw.github.com/jcarley/server-provisioning/master/bootstrap/install-rbenv.sh | bash"
+
+service nginx start
