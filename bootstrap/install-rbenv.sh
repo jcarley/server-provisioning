@@ -45,12 +45,12 @@ installruby() {
     echo "Install ruby 1.9.3"
 
     # install ruby
-    rbenv install 1.9.3-p125
+    rbenv install 1.9.3-p194
 
     echo "Setting ruby 1.9.3 as the global."
 
     # set 1.9.3 as our global ruby
-    rbenv global 1.9.3-p125
+    rbenv global 1.9.3-p194
 
     echo "Installing necessary gems."
 
