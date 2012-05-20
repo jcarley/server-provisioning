@@ -23,18 +23,17 @@ template "/home/#{node[:user][:name]}/.zshrc" do
   owner node[:user][:name]
 end
 
-directory "/home/apps/#{node[:user][:name]}/example" do
+directory "/home/#{node[:user][:name]}/apps/example" do
   owner node[:user][:name]
-  action :create
 end
 
-file "/home/apps/#{node[:user][:name]}/example/index.html" do
+file "/home/#{node[:user][:name]}/apps/example/index.html" do
   owner node[:user][:name]
   content "<h1>Hello World!</h1>"
 end
 
 file "#{node[:nginx][:dir]}/sites-available/example" do
-  content "server { root /home/apps/#{node[:user][:name]}/example; }"
+  content "server { root /home/#{node[:user][:name]}/apps/example; }"
 end
 
 include_recipe "nginx::source"
