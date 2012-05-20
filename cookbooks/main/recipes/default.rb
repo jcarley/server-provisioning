@@ -25,6 +25,7 @@ end
 
 directory "/home/apps/#{node[:user][:name]}/example" do
   owner node[:user][:name]
+  action :create
 end
 
 file "/home/apps/#{node[:user][:name]}/example/index.html" do
