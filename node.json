@@ -3,5 +3,8 @@
     "name": "deployer",
     "password": "$1$W1JzXW9x$hdDhZFx4XYDEPNxLp4Q4H0"
   },
+  "ohai": {
+    "plugin_path": "/var/chef/ohai_plugins"
+  },
   "run_list":["recipe[main]"]
 }
