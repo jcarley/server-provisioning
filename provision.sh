@@ -15,4 +15,5 @@ get_bundle() {
 cd /etc/puppet/modules
 get_bundle puppetlabs puppetlabs-nginx
 
+cd /etc/puppet
 puppet apply manifests/site.pp
