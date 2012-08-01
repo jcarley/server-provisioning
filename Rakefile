@@ -20,7 +20,7 @@ end
 
 # Test changes on client machine
 task :apply => [:deploy] do
-  sh "#{SSH} #{TARGET} 'cd /etc/puppet && ./provision.sh'" do |ok, status|
+  sh "#{SSH} #{TARGET} 'cd /etc/puppet && sudo ./provision.sh'" do |ok, status|
     puts case status.exitstatus
       when 0 then "Client is up to date."
       when 1 then "Puppet couldn't compile the manifest."
