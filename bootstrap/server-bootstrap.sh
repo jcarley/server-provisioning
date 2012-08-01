@@ -50,5 +50,5 @@ else
 fi
 
 if [ ! $(which puppet) ]; then
-  gem install puppet
+  gem install puppet --no-ri --no-rdoc
 fi
