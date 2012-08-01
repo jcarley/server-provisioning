@@ -43,7 +43,8 @@ fi
 if [ ! -d /etc/puppet ]; then
   echo "Creating /etc/puppet folder."
 
-  mkdir /etc/puppet
+  #mkdir /etc/puppet
+  git clone git://github.com/jcarley/server-provisioning.git puppet
 else
   echo "Folder /etc/puppet already exists."
 fi

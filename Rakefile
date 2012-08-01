@@ -14,13 +14,13 @@ task :deploy => [:checkin] do
   sh "#{SSH} #{TARGET} 'cd /etc/puppet && git pull origin master'"
 end
 
-task :provision => [:deploy] do
-  sh "#{SSH} #{TARGET} 'cd /var/chef && chef-solo -c solo.rb'"
-end
+#task :provision => [:deploy] do
+  #sh "#{SSH} #{TARGET} 'cd /etc/puppet && chef-solo -c solo.rb'"
+#end
 
 # Test changes on client machine
 task :apply => [:deploy] do
-  sh "#{SSH} #{TARGET} 'puppet agent --test'" do |ok, status|
+  sh "#{SSH} #{TARGET} 'sudo puppet agent --test'" do |ok, status|
     puts case status.exitstatus
       when 0 then "Client is up to date."
       when 1 then "Puppet couldn't compile the manifest."
@@ -32,5 +32,5 @@ end
 
 # See the changes puppet would make, but don't actually change anything
 task :noop => [:deploy] do
-  sh "#{SSH} #{TARGET} 'puppet agent --test --noop'"
+  sh "#{SSH} #{TARGET} 'sudo puppet agent --test --noop'"
 end
