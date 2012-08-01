@@ -11,7 +11,7 @@ end
 
 # Checkin code to github, and deploy to puppet master machine (in this case its also the client)
 task :deploy => [:checkin] do
-  sh "#{SSH} #{TARGET} 'cd /var/chef && git pull origin master'"
+  sh "#{SSH} #{TARGET} 'cd /etc/puppet && git pull origin master'"
 end
 
 task :provision => [:deploy] do
