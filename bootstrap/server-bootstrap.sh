@@ -49,3 +49,6 @@ else
   echo "Folder /etc/puppet already exists."
 fi
 
+if [ ! $(which puppet) ]; then
+  gem install puppet
+fi
