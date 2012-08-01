@@ -20,7 +20,7 @@ end
 
 # Test changes on client machine
 task :apply => [:deploy] do
-  sh "#{SSH} #{TARGET} 'puppet apply --verbose manifests/site.pp'" do |ok, status|
+  sh "#{SSH} #{TARGET} 'cd /etc/puppet && puppet apply --verbose manifests/site.pp'" do |ok, status|
     puts case status.exitstatus
       when 0 then "Client is up to date."
       when 1 then "Puppet couldn't compile the manifest."
@@ -32,5 +32,5 @@ end
 
 # See the changes puppet would make, but don't actually change anything
 task :noop => [:deploy] do
-  sh "#{SSH} #{TARGET} 'puppet agent --test --noop'"
+  sh "#{SSH} #{TARGET} 'cd /etc/puppet && puppet agent --test --noop'"
 end
