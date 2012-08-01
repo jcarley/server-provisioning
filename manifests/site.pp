@@ -2,7 +2,7 @@ Exec {
   path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 }
 
-include puppetlabs-nginx
+include nginx
 
 node default {
   class { 'nginx': }
