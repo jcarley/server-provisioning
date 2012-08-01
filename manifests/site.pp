@@ -4,8 +4,3 @@ Exec {
 
 include nginx
 
-node default {
-  class { 'nginx': }
-}
-
-
