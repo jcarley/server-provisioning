@@ -1,13 +1,16 @@
 TARGET = 'linode'
 SSH = 'ssh -t -A'
 
-task :bootstrap do
+task :checkin do
+  sh "git push origin master"
+end
+
+task :bootstrap => [:checkin] do
   sh "#{SSH} #{TARGET} 'curl -L https://raw.github.com/jcarley/server-provisioning/master/bootstrap/server-bootstrap.sh | bash'"
 end
 
 # Checkin code to github, and deploy to puppet master machine (in this case its also the client)
-task :deploy do
-  sh "git push origin master"
+task :deploy => [:checkin] do
   sh "#{SSH} #{TARGET} 'cd /var/chef && git pull origin master'"
 end
 
