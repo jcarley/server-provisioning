@@ -40,7 +40,11 @@ else
   echo "User deployer already exists."
 fi
 
-if [ -d /etc/puppet ]; then
+if [ ! -d /etc/puppet ]; then
+  echo "Creating /etc/puppet folder."
+
   mkdir /etc/puppet
+else
+  echo "Folder /etc/puppet already exists."
 fi
 
