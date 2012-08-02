@@ -3,7 +3,6 @@ Exec {
 }
 
 include nginx
-include postgresql
 
 node default {
   nginx::site { "finishfirstsoftware.com": }
