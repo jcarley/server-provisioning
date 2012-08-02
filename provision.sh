@@ -15,7 +15,7 @@ get_bundle() {
 cd /etc/puppet/modules
 # get_bundle uggedal puppet-module-nginx nginx
 get_bundle uggedal puppet-module-ufw ufw
-get_bundle puppetlabs puppetlabs-postgres postgresql
+get_bundle puppetlabs puppetlabs-postgres postgres
 get_bundle uggedal puppet-module-monit monit
 get_bundle alup puppet-rbenv rbenv
 
