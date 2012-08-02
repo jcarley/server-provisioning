@@ -5,5 +5,5 @@ Exec {
 include nginx
 
 node default {
-  nginx::site { "finishfirstsoftware.com" }
+  nginx::site { "finishfirstsoftware.com": }
 }
