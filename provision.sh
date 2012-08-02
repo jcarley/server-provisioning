@@ -20,4 +20,5 @@ get_bundle uggedal puppet-module-monit monit
 get_bundle alup puppet-rbenv rbenv
 
 cd /etc/puppet
-puppet apply manifests/site.pp
+puppet apply --verbose manifests/site.pp
+
