@@ -19,7 +19,7 @@ class nginx {
   }
 }
 
-define site( $sitedomain = "" ) {
+define nginx::site( $sitedomain = "" ) {
   include nginx
 
   if $sitedomain == "" {
