@@ -3,27 +3,23 @@ Exec {
 }
 
 include nginx
-include postgres
+include postgresql
 
 node default {
   nginx::site { "finishfirstsoftware.com": }
 
   class { "rbenv":
-    user => 'deployer',
-    group => 'admin',
+    user     => 'deployer',
+    group    => 'admin',
     home_dir => '/home/deployer',
-    compile => true,
-    version => '1.9.3-p194',
+    compile  => true,
+    version  => '1.9.3-p194',
   }
 
-  postgres::role { "carleyfamily":
-    ensure   => present,
-    password => "letmein123ABC"
-  }
+  class { "postgresql::server": }
 
-  postgres::database { "carleyfamily_production":
-    ensure => present,
-    owner  => "carleyfamily",
+  postgresql::db { "carleyfamily_production":
+    owner    => "carleyfamily",
+    password => "letmein123ABC",
   }
-
 }
