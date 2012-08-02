@@ -10,7 +10,7 @@ package {
 service {
   "nginx":
     ensure => true,
-    enabled => true
+    enable => true
 }
 
 
