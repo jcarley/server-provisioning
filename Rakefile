@@ -14,10 +14,6 @@ task :deploy => [:checkin] do
   sh "#{SSH} #{TARGET} 'cd /etc/puppet && git pull origin master'"
 end
 
-#task :provision => [:deploy] do
-  #sh "#{SSH} #{TARGET} 'cd /etc/puppet && chef-solo -c solo.rb'"
-#end
-
 # Test changes on client machine
 task :apply => [:deploy] do
   sh "#{SSH} #{TARGET} 'cd /etc/puppet && ./provision.sh'" do |ok, status|
