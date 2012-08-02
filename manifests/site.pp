@@ -4,4 +4,6 @@ Exec {
 
 include nginx
 
-
+node default {
+  nginx::site { "finishfirstsoftware.com" }
+}
