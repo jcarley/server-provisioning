@@ -6,4 +6,12 @@ include nginx
 
 node default {
   nginx::site { "finishfirstsoftware.com": }
+
+  class { "rbenv":
+    user => 'deployer',
+    group => 'admin',
+    home_dir => '/home/deployer',
+    compile => true,
+    version => '1.9.3-p194',
+  }
 }

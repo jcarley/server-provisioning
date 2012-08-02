@@ -13,6 +13,11 @@ get_bundle() {
 }
 
 cd /etc/puppet/modules
+# get_bundle uggedal puppet-module-nginx nginx
+# get_bundle uggedal puppet-module-ufw ufw
+# get_bundle uggedal puppet-module-postgresql postgresql
+# get_bundle uggedal puppet-module-monit monit
+get_bundle alup puppet-rbenv rbenv
 
 cd /etc/puppet
 puppet apply manifests/site.pp
