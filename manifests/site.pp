@@ -30,13 +30,13 @@ node default {
     # password => "letmein123ABC",
   # }
 
-  # class { "ufw": }
+  class { "ufw": }
 
-  # ufw::allow { "allow-ssh-from-all":
-    # port => 22,
-  # }
+  ufw::allow { "allow-ssh-from-all":
+    port => 22,
+  }
 
-  # ufw::allow { "allow-http-from-all":
-    # port => 80,
-  # }
+  ufw::allow { "allow-http-from-all":
+    port => 80,
+  }
 }
