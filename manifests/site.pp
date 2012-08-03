@@ -7,13 +7,12 @@ include nginx
 node default {
 
   group { "admin":
-      ensure => "present",
+    ensure => "present",
   }
 
   user { "deployer":
     ensure     => "present",
     managehome => true,
-    group      => "admin",
   }
 
   # rbenv::install { "deployer": }
