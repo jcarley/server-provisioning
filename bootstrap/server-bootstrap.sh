@@ -8,15 +8,18 @@ if [ ! $(which git) ]; then
 fi
 
 if [ ! $(which ruby) ]; then
-  echo "Install ruby 1.9.3 from source as the system ruby"
+  #echo "Install ruby 1.9.3 from source as the system ruby"
 
-  cd /tmp
-  wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz 
-  tar -xvzf ruby-1.9.3-p194.tar.gz
-  cd ruby-1.9.3-p194/
-  ./configure --prefix=/usr/local
-  make
-  make install
+  #cd /tmp
+  #wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz
+  #tar -xvzf ruby-1.9.3-p194.tar.gz
+  #cd ruby-1.9.3-p194/
+  #./configure --prefix=/usr/local
+  #make
+  #make install
+
+  echo "Install ruby 1.8.7 as the system ruby"
+  sudo apt-get install ruby ruby-dev
 fi
 
 # add the puppet user
