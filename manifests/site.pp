@@ -2,10 +2,19 @@ Exec {
   path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 }
 
+group { "admin":
+    ensure => "present",
+}
+
+user { "deployer":
+  ensure     => "present",
+  managehome => true,
+  group      => "admin",
+}
+
 include nginx
 
 node default {
-  nginx::site { "finishfirstsoftware.com": }
 
   class { "rbenv":
     user     => 'deployer',
