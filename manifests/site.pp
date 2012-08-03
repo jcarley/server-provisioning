@@ -24,7 +24,7 @@ node default {
     version  => '1.9.3-p194',
   }
 
-  rbenv::install { "deployer",
+  rbenv::install { "deployer":
     home => '/home/deployer',
   }
 
