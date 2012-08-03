@@ -6,11 +6,15 @@ apt-get -y update
 if [ ! $(which git) ]; then
   echo "Installing essential server packages."
   apt-get -y install build-essential zlib1g-dev libssl-dev libreadline-gplv2-dev libyaml-dev git-core python-software-properties
+else
+  echo "Server essentials already installed."
 fi
 
 if [ ! $(which ruby) ]; then
   echo "Install ruby 1.8.7 as the system ruby."
   apt-get install ruby ruby-dev
+else
+  echo "Ruby is all ready installed."
 fi
 
 # add the puppet user
@@ -32,6 +36,9 @@ else
 fi
 
 if [ ! $(which puppet) ]; then
+  echo "Installing puppet gem."
   gem install puppet --no-ri --no-rdoc
+else
+  echo "Puppet gem already installed."
 fi
 
