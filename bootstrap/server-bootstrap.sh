@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-  add-apt-repository ppa:nginx/stable
-  add-apt-repository ppa:pitti/postgresql
-  add-apt-repository ppa:chris-lea/node.js
 apt-get -y update
 
 # We are going to use git as our decision token
@@ -20,7 +17,7 @@ fi
 
 if [ ! $(which ruby) ]; then
   echo "Install ruby 1.8.7 as the system ruby."
-  apt-get install ruby ruby-dev
+  apt-get install ruby ruby-dev rubygems
 else
   echo "Ruby is all ready installed."
 fi
