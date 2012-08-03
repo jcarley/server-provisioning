@@ -16,26 +16,27 @@ node default {
     group      => "admin",
   }
 
-  rbenv::install { "deployer": }
+  # rbenv::install { "deployer": }
 
-  rbenv::compile { "1.9.3-p194":
-    user => 'deployer',
-  }
+  # rbenv::compile { "1.9.3-p194":
+    # user    => 'deployer',
+    # default => true,
+  # }
 
-  class { "postgresql::server": }
+  # class { "postgresql::server": }
 
-  postgresql::db { "carleyfamily_production":
-    owner    => "carleyfamily",
-    password => "letmein123ABC",
-  }
+  # postgresql::db { "carleyfamily_production":
+    # owner    => "carleyfamily",
+    # password => "letmein123ABC",
+  # }
 
-  class { "ufw": }
+  # class { "ufw": }
 
-  ufw::allow { "allow-ssh-from-all":
-    port => 22,
-  }
+  # ufw::allow { "allow-ssh-from-all":
+    # port => 22,
+  # }
 
-  ufw::allow { "allow-http-from-all":
-    port => 80,
-  }
+  # ufw::allow { "allow-http-from-all":
+    # port => 80,
+  # }
 }
