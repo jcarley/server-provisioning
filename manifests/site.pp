@@ -13,7 +13,6 @@ user { "deployer":
 }
 
 include nginx
-include rbenv
 
 node default {
 
@@ -23,6 +22,15 @@ node default {
     home_dir => '/home/deployer',
     compile  => true,
     version  => '1.9.3-p194',
+  }
+
+  rbenv::install { "deployer",
+    home => '/home/deployer',
+  }
+
+  rbenv::complile { "1.9.3-p194",
+    user => 'deployer',
+    home => '/home/deployer',
   }
 
   class { "postgresql::server": }
