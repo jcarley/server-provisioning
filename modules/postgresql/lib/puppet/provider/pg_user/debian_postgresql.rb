@@ -51,7 +51,7 @@ Puppet::Type.type(:pg_user).provide(:debian_postgresql) do
   def exists?
     su_output = su("-", "postgres", "-c", "psql --quiet -A -t -c \"select 1 from pg_roles where rolname = '%s';\"" % @resource.value(:name))
     return false if su_output.length == 0
-    return true if !su_output.respond_to(:each) && su_output == "1\n"
+    return true if !su_output.respond_to?(:each) && su_output == "1\n"
     su_output.each do |line|
       if line == "1\n"
         return true
