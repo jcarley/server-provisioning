@@ -3,7 +3,6 @@ Exec {
 }
 
 include nginx
-include rbenv
 
 node default {
 
@@ -17,13 +16,10 @@ node default {
     group      => "admin",
   }
 
-  rbenv::install { "deployer":
-    home => '/home/deployer',
-  }
+  rbenv::install { "deployer": }
 
   rbenv::compile { "1.9.3-p194":
     user => 'deployer',
-    home => '/home/deployer',
   }
 
   class { "postgresql::server": }
