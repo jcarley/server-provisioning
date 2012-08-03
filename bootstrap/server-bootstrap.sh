@@ -4,11 +4,12 @@ apt-get -y update
 
 # We are going to use git as our decision token
 if [ ! $(which git) ]; then
+  echo "Installing essential server packages."
   apt-get -y install build-essential zlib1g-dev libssl-dev libreadline-gplv2-dev libyaml-dev git-core python-software-properties
 fi
 
 if [ ! $(which ruby) ]; then
-  echo "Install ruby 1.8.7 as the system ruby"
+  echo "Install ruby 1.8.7 as the system ruby."
   apt-get install ruby ruby-dev
 fi
 
