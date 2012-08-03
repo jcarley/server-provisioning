@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 
+  add-apt-repository ppa:nginx/stable
+  add-apt-repository ppa:pitti/postgresql
+  add-apt-repository ppa:chris-lea/node.js
 apt-get -y update
 
 # We are going to use git as our decision token
 if [ ! $(which git) ]; then
   echo "Installing essential server packages."
   apt-get -y install build-essential zlib1g-dev libssl-dev libreadline-gplv2-dev libyaml-dev git-core python-software-properties
+
+  add-apt-repository ppa:nginx/stable
+  add-apt-repository ppa:pitti/postgresql
+  add-apt-repository ppa:chris-lea/node.js
+  apt-get -y update
 else
   echo "Server essentials already installed."
 fi
