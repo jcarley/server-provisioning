@@ -12,6 +12,7 @@ node default {
 
   user { "deployer":
     ensure     => "present",
+    shell      => "/bin/bash",
     managehome => true,
   }
 
