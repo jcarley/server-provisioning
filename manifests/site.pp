@@ -13,6 +13,7 @@ user { "deployer":
 }
 
 include nginx
+include rbenv
 
 node default {
 
