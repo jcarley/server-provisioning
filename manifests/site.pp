@@ -16,14 +16,6 @@ include nginx
 
 node default {
 
-  class { "rbenv":
-    user     => 'deployer',
-    group    => 'admin',
-    home_dir => '/home/deployer',
-    compile  => true,
-    version  => '1.9.3-p194',
-  }
-
   rbenv::install { "deployer":
     home => '/home/deployer',
   }
