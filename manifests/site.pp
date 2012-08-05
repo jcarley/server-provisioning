@@ -10,10 +10,10 @@ node default {
     ensure => "present",
   }
 
-  user { "deployer":
-    ensure     => "present",
-    shell      => "/bin/bash",
-    managehome => true,
+  user_homedir { "deployer":
+    group  => "admin",
+    shell  => "/bin/bash",
+    ensure => present,
   }
 
   # rbenv::install { "deployer": }
