@@ -1,3 +1,4 @@
+
 define user_homedir ($group, $fullname, $ingroups) {
   user { "$name":
     ensure => present,
