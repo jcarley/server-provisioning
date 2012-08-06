@@ -5,7 +5,7 @@ Exec {
 node default {
 
   include nginx
-  include user_homedir
+  import user_homedir
 
   group { "admin":
     ensure => "present",
