@@ -12,10 +12,11 @@ Vagrant::Config.run do |config|
   config.vm.define :web01 do |config|
     config.vm.customize ["modifyvm", :id, "--name", "app", "--memory", "512"]
     config.vm.box = "precise32_bootstrapped"
-    config.vm.host_name = "app"
+    config.vm.host_name = "web01"
     config.vm.forward_port 22, 2222, :auto => true
     config.vm.forward_port 80, 8000
     config.vm.network :hostonly, "33.33.13.37"
+    config.vm.share_folder "share", "~/share", "."
   end
 
 end
