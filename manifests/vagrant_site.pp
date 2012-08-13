@@ -12,20 +12,34 @@ class base {
 
   group { "puppet":
     ensure  => "present",
-    require => Exec["apt-update"],
   }
+
 }
 
 node 'web01' {
   include base
   include apache
 
-  apache::vhost { 'www.example.com':
+  user { "deployer":
+    ensure     => 'present',
+    shell      => '/bin/bash',
+    groups     => ['adm', 'admin'],
+    home       => '/home/deployer',
+    managehome => true,
+  }
+
+  file { "/home/deployer/apps":
+    ensure => directory,
+    require => User["deployer"],
+  }
+
+  apache::vhost { 'www.finishfirstsoftware.com':
     port          => 80,
-    docroot       => '/var/www/www.example.com',
+    docroot       => '/home/deployer/apps/www.finishfirstsoftware.com',
     ssl           => false,
     priority      => 10,
-    serveraliases => 'home.example.com',
+    serveraliases => 'home.finishfirstsoftware.com',
+    require       => File ["/home/deployer/apps"],
   }
 
   class {'postgresql::server':
