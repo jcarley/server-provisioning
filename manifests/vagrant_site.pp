@@ -33,6 +33,11 @@ node 'web01' {
     require => User["deployer"],
   }
 
+  file { '/home/deployer/apps/www.finishfirstsoftware.com':
+    ensure  => directory,
+    require => File['/home/deployer/apps'],
+  }
+
   apache::vhost { 'www.finishfirstsoftware.com':
     port          => 80,
     docroot       => '/home/deployer/apps/www.finishfirstsoftware.com',
