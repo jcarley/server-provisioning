@@ -1,0 +1,7 @@
+1) Make a commit on local machine for a topic branch
+2) Push topic branch to remote server
+3) Run rake command start vm for topic branch
+    - host file is automatically updated with vm IP
+4) Browse to application on local dev machine
+5) Run rake command to halt vm after testing
+
