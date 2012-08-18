@@ -1,4 +1,4 @@
 class nginx {
-  include nginx::install, nginx::service
+  include nginx::dependencies, nginx::install
 }
 

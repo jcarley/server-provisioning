@@ -18,18 +18,33 @@ class base {
 
 node 'web01' {
   include base
+  include nginx
+}
+
+node 'web02' {
+  include base
   include apache
+
+  # package { "imagemagick":
+    # ensure => 'present',
+  # }
+
+  # group { "deployer":
+    # ensure => 'present',
+  # }
 
   user { "deployer":
     ensure     => 'present',
-    shell      => '/bin/bash',
+    shell      => '/bin/zsh',
     groups     => ['adm', 'admin'],
     home       => '/home/deployer',
     managehome => true,
   }
 
   file { "/home/deployer/apps":
-    ensure => directory,
+    ensure  => directory,
+    owner   => 'deployer',
+    group   => 'deployer',
     require => User["deployer"],
   }
 
