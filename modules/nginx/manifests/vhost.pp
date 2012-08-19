@@ -1,4 +1,4 @@
-define nginx::vhost( $sitedomain = "" ) {
+define nginx::vhost( $port = 80, $sitedomain = "", $template='nginx/vhost.erb' ) {
   include nginx::install
 
   if $sitedomain == "" {
@@ -7,15 +7,18 @@ define nginx::vhost( $sitedomain = "" ) {
     $vhost_domain = $sitedomain
   }
 
-  file { "/usr/local/etc/nginx/sites-available/${vhost_domain}.conf":
-    content => template("nginx/vhost.erb"),
-    require => Exec["nginx install"],
+  file { '/usr/local/etc/nginx/sites-available/${vhost_domain}.conf':
+    content => template($template),
+    owner   => 'www-data',
+    group   => 'www-data',
+    mode    => 0644,
+    require => Class['nginx::install'],
   }
 
-  file { "/usr/local/etc/nginx/sites-enabled/${vhost_domain}.conf":
+  file { '/usr/local/etc/nginx/sites-enabled/${vhost_domain}.conf':
     ensure => link,
-    target => "/usr/local/etc/nginx/sites-available/${vhost_domain}.conf",
-    require => File["/usr/local/etc/nginx/sites-available/${vhost_domain}.conf"],
-    notify => Exec["reload nginx"],
+    target => '/usr/local/etc/nginx/sites-available/${vhost_domain}.conf',
+    require => File['/usr/local/etc/nginx/sites-available/${vhost_domain}.conf'],
+    notify => Exec['reload nginx'],
   }
 }
