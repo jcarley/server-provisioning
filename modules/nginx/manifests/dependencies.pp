@@ -7,7 +7,7 @@ class nginx::dependencies {
   if ! defined(Package['libyaml-dev'])                  { package { 'libyaml-dev':                ensure => installed } }
   if ! defined(Package['python-software-properties'])   { package { 'python-software-properties': ensure => installed } }
   if ! defined(Package['git-core'])                     { package { 'git-core':                   ensure => installed } }
-  if ! defined(Package['gcc'])                          { package { 'gcc':                        ensure => installed } }
+  if ! defined(Package['gcc-4.4'])                      { package { 'gcc-4.4':                    ensure => installed } }
   if ! defined(Package['libpcre3'])                     { package { 'libpcre3':                   ensure => installed } }
   if ! defined(Package['libpcre3-dev'])                 { package { 'libpcre3-dev':               ensure => installed } }
   if ! defined(Package['openssl'])                      { package { 'openssl':                    ensure => installed } }

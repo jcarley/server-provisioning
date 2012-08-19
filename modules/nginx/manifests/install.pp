@@ -2,12 +2,18 @@ class nginx::install {
 
   exec { "nginx install":
     path => '/usr/bin:/usr/sbin:/bin',
-    command => "",
+    command => "~/share/bootstrap/nginx_install.sh",
     creates  => '/opt/nginx',
     require => [
       Class['nginx::dependencies'],
     ],
   }
+
+  # file { "/usr/local/etc/nginx/nginx.conf":
+    # source  => template("nginx.conf.erb"),
+    # notify  => Exec["reload nginx"],
+    # require => Package["nginx"],
+  # }
 
   # exec { "reload nginx":
     # command => "/usr/sbin/service nginx reload",
@@ -15,9 +21,4 @@ class nginx::install {
     # refreshonly => true,
   # }
 
-  # file { "/etc/nginx/nginx.conf":
-    # source => "puppet:///modules/nginx/nginx.conf",
-    # notify => Exec["reload nginx"],
-    # require => Package["nginx"],
-  # }
 }
