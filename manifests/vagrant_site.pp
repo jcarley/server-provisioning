@@ -19,6 +19,21 @@ class base {
 node 'web01' {
   include base
   include nginx
+
+  user { "deployer":
+    ensure     => 'present',
+    shell      => '/bin/zsh',
+    groups     => ['adm', 'admin'],
+    home       => '/home/deployer',
+    managehome => true,
+  }
+
+  file { "/home/deployer/apps":
+    ensure  => directory,
+    owner   => 'deployer',
+    group   => 'deployer',
+    require => User["deployer"],
+  }
 }
 
 node 'web02' {

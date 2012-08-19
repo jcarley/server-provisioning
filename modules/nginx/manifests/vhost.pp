@@ -7,15 +7,15 @@ define nginx::vhost( $sitedomain = "" ) {
     $vhost_domain = $sitedomain
   }
 
-  file { "/etc/nginx/sites-available/${vhost_domain}.conf":
+  file { "/usr/local/etc/nginx/sites-available/${vhost_domain}.conf":
     content => template("nginx/vhost.erb"),
-    require => Package["nginx"],
+    require => Exec["nginx install"],
   }
 
-  file { "/etc/nginx/sites-enabled/${vhost_domain}.conf":
+  file { "/usr/local/etc/nginx/sites-enabled/${vhost_domain}.conf":
     ensure => link,
-    target => "/etc/nginx/sites-available/${vhost_domain}.conf",
-    require => File["/etc/nginx/sites-available/${vhost_domain}.conf"],
+    target => "/usr/local/etc/nginx/sites-available/${vhost_domain}.conf",
+    require => File["/usr/local/etc/nginx/sites-available/${vhost_domain}.conf"],
     notify => Exec["reload nginx"],
   }
 }

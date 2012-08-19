@@ -11,5 +11,6 @@ class nginx::dependencies {
   if ! defined(Package['libpcre3'])                     { package { 'libpcre3':                   ensure => installed } }
   if ! defined(Package['libpcre3-dev'])                 { package { 'libpcre3-dev':               ensure => installed } }
   if ! defined(Package['openssl'])                      { package { 'openssl':                    ensure => installed } }
+  if ! defined(Package['curl'])                         { package { 'curl':                       ensure => installed } }
 }
 
