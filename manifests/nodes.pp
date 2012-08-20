@@ -1,6 +1,4 @@
 
-include base_node.pp
-
 node 'web01' {
   include base
   include nginx

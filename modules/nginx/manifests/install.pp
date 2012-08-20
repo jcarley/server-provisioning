@@ -1,6 +1,8 @@
 class nginx::install {
   include nginx::service
 
+  notify { "Installing nginx from source." }
+
   group { 'www-data':
     ensure => 'present'
   }
