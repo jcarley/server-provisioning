@@ -7,7 +7,7 @@ define nginx::vhost( $port = 80, $sitedomain = "", $template='nginx/vhost.erb' )
     $vhost_domain = $sitedomain
   }
 
-  file { '/usr/local/etc/nginx/sites-available/${vhost_domain}.conf':
+  file { "/usr/local/etc/nginx/sites-available/${vhost_domain}.conf":
     content => template($template),
     owner   => 'www-data',
     group   => 'www-data',
@@ -15,10 +15,10 @@ define nginx::vhost( $port = 80, $sitedomain = "", $template='nginx/vhost.erb' )
     require => Class['nginx::install'],
   }
 
-  file { '/usr/local/etc/nginx/sites-enabled/${vhost_domain}.conf':
+  file { "/usr/local/etc/nginx/sites-enabled/${vhost_domain}.conf":
     ensure => link,
-    target => '/usr/local/etc/nginx/sites-available/${vhost_domain}.conf',
-    require => File['/usr/local/etc/nginx/sites-available/${vhost_domain}.conf'],
+    target => "/usr/local/etc/nginx/sites-available/${vhost_domain}.conf",
+    require => File["/usr/local/etc/nginx/sites-available/${vhost_domain}.conf"],
     notify => Exec['reload nginx'],
   }
 }

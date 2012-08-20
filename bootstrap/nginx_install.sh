@@ -38,6 +38,10 @@ fi
 
 cd /tmp/nginx-$V
 
+# TODO: Add flv support
 ./configure --prefix=$prefix --with-http_ssl_module --with-pcre --with-ipv6 --conf-path=$etc/nginx/nginx.conf --pid-path=$var/run/nginx.pid --lock-path=$var/nginx/nginx.lock --add-module=$upload_module_path --add-module=$upload_progress_module_path
 make
 sudo make install
+
+
+# TODO:  Clean up tmp

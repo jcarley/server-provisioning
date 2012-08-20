@@ -1,4 +1,6 @@
 
+import "base_node"
+
 node 'web01' {
   include base
   include nginx
