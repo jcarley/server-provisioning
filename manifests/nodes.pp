@@ -1,5 +1,5 @@
 
-include base_node.pp
+import "base_node"
 
 node 'web01' {
   include base
