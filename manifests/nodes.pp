@@ -5,6 +5,10 @@ node 'web01' {
   include base
   include nginx
 
+  nginx::vhost { 'www.finishfirstsoftware.com':
+    require => File['/home/deployer/apps'],
+  }
+
   package { "imagemagick":
     ensure => 'present',
   }
@@ -34,9 +38,6 @@ node 'web01' {
       require  => Class['postgresql::server'],
   }
 
-  nginx::vhost { 'www.finishfirstsoftware.com':
-    require => File['/home/deployer/apps'],
-  }
 }
 
 node 'web02' {
