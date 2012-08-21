@@ -44,11 +44,6 @@ node 'web02' {
   include base
   include apache
 
-
-  # group { "deployer":
-    # ensure => 'present',
-  # }
-
   user { "deployer":
     ensure     => 'present',
     shell      => '/bin/zsh',
