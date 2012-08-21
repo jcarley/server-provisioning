@@ -14,9 +14,9 @@ get_bundle() {
 
 cd /etc/puppet/modules
 get_bundle uggedal puppet-module-ufw ufw
-get_bundle uggedal puppet-module-monit monit
-get_bundle alup puppet-rbenv rbenv
+# get_bundle uggedal puppet-module-monit monit
+# get_bundle alup puppet-rbenv rbenv
 
 cd /etc/puppet
-puppet apply --verbose manifests/site.pp
+puppet apply --verbose manifests/linode_site.pp
 

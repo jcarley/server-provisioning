@@ -2,19 +2,47 @@ Exec {
   path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 }
 
-node default {
+import "base_node"
 
+node default {
+  include base
   include nginx
-  import user_homedir
+
+  nginx::vhost { 'www.finishfirstsoftware.com':
+    require => File['/home/deployer/apps'],
+  }
+
+  package { "imagemagick":
+    ensure => 'present',
+  }
 
   group { "admin":
     ensure => "present",
   }
 
-  user_homedir { "deployer":
-    group  => "admin",
-    shell  => "/bin/bash",
-    ensure => present,
+  user { "deployer":
+    ensure     => 'present',
+    shell      => '/bin/zsh',
+    groups     => ['admin'],
+    home       => '/home/deployer',
+    managehome => true,
+  }
+
+  file { "/home/deployer/apps":
+    ensure  => directory,
+    owner   => 'deployer',
+    group   => 'deployer',
+    require => User["deployer"],
+  }
+
+  class {'postgresql::server':
+    version => '9.1',
+  }
+
+  postgresql::db { 'carleyfamily_production':
+      owner    => 'carleyfamily',
+      password => 'letmein123',
+      require  => Class['postgresql::server'],
   }
 
   # rbenv::install { "deployer": }
@@ -22,13 +50,6 @@ node default {
   # rbenv::compile { "1.9.3-p194":
     # user    => 'deployer',
     # default => true,
-  # }
-
-  # class { "postgresql::server": }
-
-  # postgresql::db { "carleyfamily_production":
-    # owner    => "carleyfamily",
-    # password => "letmein123ABC",
   # }
 
   class { "ufw": }
