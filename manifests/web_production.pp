@@ -1,5 +1,5 @@
 
-class production_web01 {
+class web::production {
   include nginx
 
   nginx::vhost { 'www.finishfirstsoftware.com':
