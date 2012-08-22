@@ -1,4 +1,4 @@
-ENV['VAGRANT_LOG'] = "info"
+# ENV['VAGRANT_LOG'] = "info"
 
 require 'yaml'
 require 'fileutils'
