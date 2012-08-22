@@ -8,7 +8,7 @@ node web01 {
 }
 
 # web server setup for linode server
-node localhost.members.linode.com {
+node 'localhost.members.linode.com' {
   include server::base
   include web::production
 }
