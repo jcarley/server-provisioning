@@ -1,10 +1,5 @@
-Exec {
-  path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-}
 
-import "base_node"
-
-node default {
+node 'production_web01' {
   include base
   include nginx
 
@@ -52,13 +47,13 @@ node default {
     # default => true,
   # }
 
-  class { "ufw": }
+  # class { "ufw": }
 
-  ufw::allow { "allow-ssh-from-all":
-    port => 22,
-  }
+  # ufw::allow { "allow-ssh-from-all":
+    # port => 22,
+  # }
 
-  ufw::allow { "allow-http-from-all":
-    port => 80,
-  }
+  # ufw::allow { "allow-http-from-all":
+    # port => 80,
+  # }
 }

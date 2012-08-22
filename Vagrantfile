@@ -5,7 +5,7 @@ Vagrant::Config.run do |config|
 
   config.vm.provision :puppet, :module_path => "modules" do |puppet|
     puppet.manifests_path = "manifests"
-    puppet.manifest_file = "vagrant_site.pp"
+    puppet.manifest_file = "site.pp"
     # puppet.options = ["--verbose --debug"]
   end
 

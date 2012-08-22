@@ -18,5 +18,5 @@ get_bundle uggedal puppet-module-ufw ufw
 # get_bundle alup puppet-rbenv rbenv
 
 cd /etc/puppet
-puppet apply --verbose manifests/linode_site.pp
+puppet apply --verbose manifests/site.pp
 
