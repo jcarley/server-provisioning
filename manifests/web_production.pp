@@ -46,13 +46,4 @@ class web::production {
     # default => true,
   # }
 
-  # class { "ufw": }
-
-  # ufw::allow { "allow-ssh-from-all":
-    # port => 22,
-  # }
-
-  # ufw::allow { "allow-http-from-all":
-    # port => 80,
-  # }
 }

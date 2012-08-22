@@ -11,6 +11,16 @@ node web01 {
 node 'localhost.members.linode.com' {
   include server::base
   include web::production
+
+  class { "ufw": }
+
+  ufw::allow { "allow-ssh-from-all":
+    port => 22,
+  }
+
+  ufw::allow { "allow-http-from-all":
+    port => 80,
+  }
 }
 
 node web02 {
