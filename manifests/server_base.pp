@@ -1,5 +1,5 @@
 
-class base {
+class server::base {
   include ssh
 
   exec { "apt-update":

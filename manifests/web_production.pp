@@ -1,6 +1,5 @@
 
-node 'production_web01' {
-  include base
+class 'production_web01' {
   include nginx
 
   nginx::vhost { 'www.finishfirstsoftware.com':

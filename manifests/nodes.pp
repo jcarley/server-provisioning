@@ -1,18 +1,26 @@
-import 'base_node'
-import 'web_servers'
+import 'server_base'
+import 'web_production'
 
-node 'web01' {
-  include 'production_web01'
+# web server setup for vagrant
+node web01 {
+  include server::base
+  include web::production
 }
 
-node 'web02' {
-  include base
+# web server setup for linode server
+node localhost.members.linode.com {
+  include server::base
+  include web::production
+}
+
+node web02 {
+  include server::base
   include apache
 
   user { "deployer":
     ensure     => 'present',
     shell      => '/bin/zsh',
-    groups     => ['adm', 'admin'],
+    groups     => ['admin'],
     home       => '/home/deployer',
     managehome => true,
   }
@@ -24,12 +32,12 @@ node 'web02' {
     require => User["deployer"],
   }
 
-  apache::vhost { 'www.finishfirstsoftware.com':
+  apache::vhost { 'www.example.com':
     port          => 80,
-    docroot       => '/home/deployer/apps/www.finishfirstsoftware.com',
+    docroot       => '/home/deployer/apps/www.example.com',
     ssl           => false,
     priority      => 10,
-    serveraliases => 'home.finishfirstsoftware.com',
+    serveraliases => 'home.example.com',
     require       => File ["/home/deployer/apps"],
   }
 
