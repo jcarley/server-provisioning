@@ -6,7 +6,7 @@ class web::production {
 
   user { "deployer":
     ensure     => 'present',
-    shell      => '/bin/zsh',
+    shell      => '/bin/bash',
     groups     => ['admin'],
     home       => '/home/deployer',
     managehome => true,
