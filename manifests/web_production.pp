@@ -1,15 +1,5 @@
-
 class web::production {
-  include nginx
-
-  nginx::vhost { 'www.finishfirstsoftware.com':
-    require => File['/home/deployer/apps'],
-  }
-
-  package { "imagemagick":
-    ensure => 'present',
-  }
-
+  
   group { "admin":
     ensure => "present",
   }
@@ -29,21 +19,11 @@ class web::production {
     require => User["deployer"],
   }
 
-  class {'postgresql::server':
-    version => '9.1',
+  rbenv::install { "deployer": }
+
+  rbenv::compile { "1.9.3-p194":
+    user    => 'deployer',
+    default => true,
   }
-
-  postgresql::db { 'carleyfamily_production':
-      owner    => 'carleyfamily',
-      password => 'letmein123',
-      require  => Class['postgresql::server'],
-  }
-
-  # rbenv::install { "deployer": }
-
-  # rbenv::compile { "1.9.3-p194":
-    # user    => 'deployer',
-    # default => true,
-  # }
 
 }

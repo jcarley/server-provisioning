@@ -5,12 +5,30 @@ import 'web_production'
 node web01 {
   include server::base
   include web::production
+  include nginx
+
+  nginx::vhost { 'www.finishfirstsoftware.com':
+    require => File['/home/deployer/apps'],
+  }
 }
 
 # web server setup for linode server
 node 'localhost.members.linode.com' {
   include server::base
   include web::production
+  include nginx
+
+  package { "imagemagick":
+    ensure => 'present',
+  }
+
+  package { "mongodb-10gen":
+    ensure => 'present',
+  }
+
+  package { "nodejs":
+    ensure => 'present',
+  }
 
   class { "ufw": }
 
@@ -49,6 +67,16 @@ node web02 {
     priority      => 10,
     serveraliases => 'home.example.com',
     require       => File ["/home/deployer/apps"],
+  }
+
+  class {'postgresql::server':
+    version => '9.1',
+  }
+
+  postgresql::db { 'carleyfamily_production':
+      owner    => 'carleyfamily',
+      password => 'letmein123',
+      require  => Class['postgresql::server'],
   }
 
 }

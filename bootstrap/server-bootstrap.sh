@@ -10,6 +10,10 @@ if [ ! $(which git) ]; then
   add-apt-repository ppa:nginx/stable
   add-apt-repository ppa:pitti/postgresql
   add-apt-repository ppa:chris-lea/node.js
+
+  apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+  echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | tee -a /etc/apt/sources.list.d/10gen.list
+
   apt-get -y update
 else
   echo "Server essentials already installed."
@@ -17,7 +21,7 @@ fi
 
 if [ ! $(which ruby) ]; then
   echo "Install ruby 1.8.7 as the system ruby."
-  apt-get install ruby ruby-dev rubygems
+  apt-get -y install ruby ruby-dev rubygems
 else
   echo "Ruby is all ready installed."
 fi

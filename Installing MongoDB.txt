@@ -1,0 +1,28 @@
+Install the latest stable version MongoDB
+
+$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+$ echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | tee -a /etc/apt/sources.list.d/10gen.list
+$ sudo apt-get -y update
+$ sudo apt-get -y install mongodb-10gen
+
+
+Configure MongoDB
+
+Packages are configured with:
+	/etc/mongodb.conf
+
+Data files stored in:
+	/var/lib/mongodb
+
+Log files stored in:
+	/var/log/mongodb
+
+Starting MongoDB
+$ sudo service mongodb start
+
+Stoping MongoDB
+$ sudo service mongodb stop
+
+Restarting MongoDB
+$ sudo service mongodb restart
+
