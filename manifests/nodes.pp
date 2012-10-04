@@ -1,6 +1,11 @@
 import 'server_base'
 import 'web_production'
 
+node moshpit {
+  include redis
+  include trinidad
+}
+
 # web server setup for vagrant
 node web01 {
   include server::base

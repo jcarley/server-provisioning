@@ -1,7 +1,7 @@
 
 namespace :vps do
 
-  TARGET = 'linode'
+  TARGET = 'moshpit'
   SSH = 'ssh -t -A'
 
   desc "Pushes changes to Github master branch"
