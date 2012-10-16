@@ -1,5 +1,5 @@
 class web::production {
-  
+
   group { "admin":
     ensure => "present",
   }
@@ -20,7 +20,7 @@ class web::production {
     require => User["deployer"],
   }
 
-  rbenv::install { "deployer": 
+  rbenv::install { "deployer":
     require => File['apps'],
   }
 
