@@ -1,4 +1,5 @@
 class trinidad {
+  include jruby
   $jruby_home = "/opt/jruby",
   $trinidad_home = "/opt/trinidad"
 }
