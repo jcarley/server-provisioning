@@ -9,12 +9,31 @@ node moshpit {
 # web server setup for vagrant
 node web01 {
   include server::base
-  include web::production
-  include nginx
+  include jruby
+  include puma
+  # include web::production
+  # include nginx
 
-  nginx::vhost { 'www.finishfirstsoftware.com':
-    require => File['/home/deployer/apps'],
+  package { 'vim':
+    ensure => present,
   }
+
+  file { ['/home/vagrant/apps',
+          '/home/vagrant/apps/uploader' ]:
+    ensure => directory,
+    owner  => 'vagrant',
+    group  => 'vagrant',
+    before => Puma::App[install_app],
+  }
+
+  puma::app { install_app:
+    app_path => '/home/vagrant/apps/uploader',
+    user     => 'vagrant',
+  }
+
+  # nginx::vhost { 'www.finishfirstsoftware.com':
+    # require => File['/home/deployer/apps'],
+  # }
 }
 
 # web server setup for linode server

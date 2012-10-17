@@ -1,10 +1,12 @@
-class puma::install {
-  $ruby_home = ""
+class puma::install($ruby_home = '/opt/jruby') {
 
   exec { install_puma:
-    command => 'ruby gem install puma',
+    command => 'gem install puma',
     path    => "${ruby_home}/bin:${path}",
-    unless  => "which puma",
+    creates => "${ruby_home}/bin/puma",
+    user    => 'root',
+    group   => 'root',
+    require => File[$ruby_home],
   }
 
   file { '/etc/init.d/puma':
@@ -34,7 +36,7 @@ class puma::install {
     source  => 'puppet:///modules/puma/run-puma',
     owner   => 'root',
     group   => 'root',
-    mode    => 'ug+x',
+    mode    => 'a+xr,u+rw',
     require => Exec[install_puma],
   }
 
