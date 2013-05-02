@@ -1,9 +1,34 @@
 import 'server_base'
 import 'web_production'
 
-node moshpit {
+node moshpitvm {
+  include server::base
   include redis
-  include trinidad
+
+  package { 'build-essential':
+    ensure => installed }
+  package { 'openssl':
+    ensure => installed }
+
+  package { "openjdk-7-jdk":
+    ensure => present,
+  }
+
+  package { "ant":
+    ensure  => present,
+    require => Package["openjdk-7-jdk"]
+  }
+
+  ruby::install { 'jruby-1.7.0':
+    current => true,
+    require => [ Package['openjdk-7-jdk'], Package['ant'] ],
+  }
+
+  class { 'trinidad':
+    jruby_home => '/opt/rubies/current',
+    require    => [ Ruby::Install['jruby-1.7.0'], Package['openjdk-7-jdk'] ]
+  }
+
 }
 
 # web server setup for vagrant

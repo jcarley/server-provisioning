@@ -1,22 +1,17 @@
 define puma::app($app_path = "", $user = "", $config_file_path = "", $log_file_path = "") {
-  include puma::install
 
   $puma_tmp = "${app_path}/tmp/puma"
+  $uid = $user
 
   if $config_file_path == "" {
     $config_file = "${app_path}/config/puma.rb"
 
-    file { 
+    file {
       "${app_path}/config":
-        ensure => directory,
-        owner  => $user,
-        group  => $group;
+        ensure => directory;
       $config_file:
         content => template('puma/puma_config.erb'),
         ensure  => present,
-        owner   => $user,
-        group   => $user,
-        require => Class["puma::install"];
     }
 
   } else {
@@ -32,18 +27,17 @@ define puma::app($app_path = "", $user = "", $config_file_path = "", $log_file_p
   file { [ "${app_path}/tmp",
            "${app_path}/tmp/puma"]:
     ensure  => directory,
-    owner   => $user,
-    group   => $user,
-    require => Class["puma::install"],
   }
 
   exec { add_app:
-    command => "/etc/init.d/puma add ${app_path} ${user} ${config_file} ${log_file}",
+    command => "/etc/init.d/puma add ${app_path} ${uid} ${config_file} ${log_file}",
+    unless  => "grep ${app_path} /etc/puma.conf",
+    path    => $path,
     require => [ File["${app_path}/tmp/puma"],
-                 File[$config_file],
-                 Class["puma::install"] ],
+                 File[$config_file] ],
   }
 
+  # This is here for future use
   # exec { remove_app:
     # command     => "/etc/init.d/puma remove ${app_path}",
     # refreshonly => true,

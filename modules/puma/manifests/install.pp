@@ -1,33 +1,39 @@
-class puma::install($ruby_home = '/opt/jruby') {
+define puma::install($ruby_home = '') {
 
-  exec { install_puma:
-    command => 'gem install puma',
+  if ! defined( Class['puma::params'] ) {
+    require puma::params
+  }
+
+  $puma_service_file = $puma::params::puma_service_file
+
+  exec { "${ruby_home} gem install puma":
+    command => "${ruby_home}/bin/gem install puma",
     path    => "${ruby_home}/bin:${path}",
     creates => "${ruby_home}/bin/puma",
     user    => 'root',
     group   => 'root',
-    require => File[$ruby_home],
   }
 
   file { '/etc/init.d/puma':
     alias   => install_puma_init_services,
     ensure  => present,
-    source  => 'puppet:///modules/puma/puma',
+    source  => "puppet:///modules/puma/${$puma_service_file}",
     owner   => 'root',
     group   => 'root',
     mode    => 'ug+x',
-    require => Exec[install_puma],
+    require => Exec["${ruby_home} gem install puma"],
   }
 
   exec { startup_script:
-    command => 'update-rc.d -f puma defaults',
-    creates => [ '/etc/rc0.d/K20puma',
-                 '/etc/rc1.d/K20puma',
-                 '/etc/rc2.d/K20puma',
-                 '/etc/rc3.d/K20puma',
-                 '/etc/rc4.d/K20puma',
-                 '/etc/rc5.d/K20puma',
-                 '/etc/rc6.d/K20puma' ],
+    command => $puma::params::startup_script_command,
+    creates => [ "/etc/rc0.d/${puma::params::startup_script_resource}",
+                 "/etc/rc1.d/${puma::params::startup_script_resource}",
+                 "/etc/rc2.d/${puma::params::startup_script_resource}",
+                 "/etc/rc3.d/${puma::params::startup_script_resource}",
+                 "/etc/rc4.d/${puma::params::startup_script_resource}",
+                 "/etc/rc5.d/${puma::params::startup_script_resource}",
+                 "/etc/rc6.d/${puma::params::startup_script_resource}" ],
+    path    => $path,
     require => File[install_puma_init_services],
   }
 
@@ -37,11 +43,11 @@ class puma::install($ruby_home = '/opt/jruby') {
     owner   => 'root',
     group   => 'root',
     mode    => 'a+xr,u+rw',
-    require => Exec[install_puma],
+    require => Exec["${ruby_home} gem install puma"],
   }
 
   file { '/etc/puma.conf':
     ensure  => present,
-    require => Exec[install_puma],
+    require => Exec["${ruby_home} gem install puma"],
   }
 }

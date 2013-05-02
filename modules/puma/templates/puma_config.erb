@@ -1,3 +1,5 @@
 pidfile "<%= puma_tmp %>/pid"
 state_path "<%= puma_tmp %>/state"
 activate_control_app
+
+threads 3, 10
