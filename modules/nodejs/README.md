@@ -1,68 +1,75 @@
-# puppet-nodejs module
+puppet-nodejs
+=============
 
-## Overview
+[![Build
+Status](https://travis-ci.org/willdurand/puppet-nodejs.png?branch=master)](https://travis-ci.org/willdurand/puppet-nodejs)
 
-Install nodejs package and npm package provider for Debian, Ubuntu, Fedora, and RedHat.
+This module allows to install [Node.js](http://nodejs.org/) and
+[NPM](https://npmjs.org/).
 
-## Usage
 
-### class nodejs
+Installation
+------------
 
-Installs nodejs and npm per [nodejs documentation](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager).
+This module doesn't have any hard dependencies but you need:
+`python`, `g++`, `make`, `wget` and `tar` installed.
 
-* dev_package: whether to install optional dev packages. dev packages not available on all platforms, default: false.
+Get the module:
 
-Example:
+    git clone git://github.com/willdurand/puppet-nodejs.git modules/nodejs
+
+
+Usage
+-----
+
+Include the `nodejs` class:
 
     include nodejs
 
-You may want to use apt::pin to pin package installation priority on sqeeze. See [puppetlabs-apt](https://github.com/puppetlabs/puppetlabs-apt) for more information.
+You can specify a Node.js version by specifing it:
 
-    apt::pin { 'sid': priority => 100 }
-
-### npm package
-
-Two types of npm packages are supported.
-
-* npm global packages are supported via ruby provider for puppet package type.
-* npm local packages are supported via puppet define type nodejs::npm.
-
-For more information regarding global vs. local installation see [nodejs blog](http://blog.nodejs.org/2011/03/23/npm-1-0-global-vs-local-installation/)
-
-### package
-npm package provider is an extension of puppet package type which supports versionable and upgradeable. The package provider only handles global installation:
-
-Example:
-
-    package { 'express':
-      ensure   => latest,
-      provider => 'npm',
-    }
-    
-    package { 'mime':
-      ensure   => '1.2.4',
-      provider => 'npm',
+    class { 'nodejs':
+      version => 'v0.8.0',
     }
 
-### nodejs::npm
-nodejs::npm is suitable for local installation of npm packages:
+You can install different versions of Node.js thanks to the `nodejs::install`
+definition:
 
-    nodejs::npm { '/opt/razor:express':
-      ensure  => present,
-      version => '2.5.9',
+    nodejs::install { 'v0.7.0':
+      version => 'v0.7.0',
     }
 
-nodejs::npm title consists of filepath and package name seperate via ':', and support the following attributes:
+By default, this module creates symlinks for each Node.js version installed into
+`/usr/local/bin`. You can change this behavior by using the `target_dir`
+parameter.
 
-* ensure: present, absent.
-* version: package version (optional).
-* source: package source (optional).
-* install_opt: option flags invoked during installation such as --link (optional).
-* remove_opt: option flags invoked during removal (optional).
+Also, this module installs [NPM](https://npmjs.org/) by default. You can set the
+`with_npm` parameter to `false` to not install it.
 
-## Supported Platforms
 
-The module have been tested on the following operating systems. Testing and patches for other platforms are welcomed.
+### NPM Provider
 
-* Debian Wheezy.
-* RedHat EL5.
+This module adds a new provider: `npm`. You can use it as usual:
+
+    package { 'bower':
+      provider => npm
+    }
+
+
+Running the tests
+-----------------
+
+Install the dependencies using [Bundler](http://gembundler.com):
+
+    BUNDLE_GEMFILE=.gemfile bundle install
+
+Run the following command:
+
+    BUNDLE_GEMFILE=.gemfile bundle exec rake spec
+
+
+License
+-------
+
+puppet-nodejs is released under the MIT License. See the bundled LICENSE file
+for details.

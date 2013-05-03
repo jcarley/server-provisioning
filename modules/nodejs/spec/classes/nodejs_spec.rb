@@ -1,113 +1,74 @@
 require 'spec_helper'
 
 describe 'nodejs', :type => :class do
+  let(:title) { 'nodejs' }
 
-  describe 'when deploying on debian' do
-    let :facts do
-      {
-        :operatingsystem => 'Debian',
-        :lsbdistcodename => 'sid',
-      }
-    end
+  it { should contain_file('/usr/local/node').with_ensure('directory') }
 
-    it { should contain_class('apt') }
-    it { should contain_apt__source('sid').with({
-      'location' => 'http://ftp.us.debian.org/debian/',
-    }) }
-    it { should contain_package('nodejs').with({
-      'name'    => 'nodejs',
-      'require' => 'Anchor[nodejs::repo]',
-    }) }
-    it { should contain_package('npm').with({
-      'name'    => 'npm',
-      'require' => 'Anchor[nodejs::repo]',
-    }) }
-    it { should_not contain_package('nodejs-stable-release') }
+  it { should contain_exec('node-download-latest') \
+    .with_command('wget http://nodejs.org/dist/node-latest.tar.gz') \
+    .with_cwd('/usr/local/node') \
+    .with_unless('test -f node-latest.tar.gz')
+  }
+
+  it { should contain_exec('node-unpack-latest') \
+    .with_command('tar xzvf node-latest.tar.gz && mv `ls -rd node-v*` node-latest') \
+    .with_cwd('/usr/local/node') \
+    .with_unless('test -d node-latest')
+  }
+
+  it { should contain_exec('node-install-latest') \
+    .with_cwd('/usr/local/node/node-latest') \
+    .with_unless('test -f /usr/local/node/node-latest/node')
+  }
+
+  it { should contain_exec('node-symlink-bin-latest') \
+    .with_command('ln -s /usr/local/node/node-latest/node /usr/local/bin/node-latest') \
+    .with_unless('test -L /usr/local/bin/node-latest')
+  }
+
+  it { should contain_exec('npm-download') }
+  it { should contain_exec('npm-install') }
+
+  describe 'with a given version' do
+    let(:params) {{ :version => 'v0.8.0' }}
+
+    it { should contain_exec('node-download-v0.8.0') \
+      .with_command('wget http://nodejs.org/dist/v0.8.0/node-v0.8.0.tar.gz') \
+      .with_cwd('/usr/local/node') \
+      .with_unless('test -f node-v0.8.0.tar.gz')
+    }
+
+    it { should contain_exec('node-unpack-v0.8.0') \
+      .with_command('tar xzvf node-v0.8.0.tar.gz') \
+      .with_cwd('/usr/local/node') \
+      .with_unless('test -d node-v0.8.0')
+    }
+
+    it { should contain_exec('node-install-v0.8.0') \
+      .with_cwd('/usr/local/node/node-v0.8.0') \
+      .with_unless('test -f /usr/local/node/node-v0.8.0/node')
+    }
+
+    it { should contain_exec('node-symlink-bin-v0.8.0') \
+      .with_command('ln -s /usr/local/node/node-v0.8.0/node /usr/local/bin/node-v0.8.0') \
+      .with_unless('test -L /usr/local/bin/node-v0.8.0')
+    }
   end
 
-  describe 'when deploying on ubuntu' do
-    let :facts do
-      {
-        :operatingsystem => 'Ubuntu',
-        :lsbdistcodename => 'edgy',
-      }
-    end
+  describe 'with a given target_dir' do
+    let(:params) {{ :target_dir => '/bin' }}
 
-    let :params do
-      { :dev_package => true, }
-    end
-
-    it { should contain_class('apt') }
-    it { should contain_apt__ppa('ppa:chris-lea/node.js') }
-    it { should contain_package('nodejs') }
-    it { should contain_package('nodejs').with({
-      'name'    => 'nodejs',
-      'require' => 'Anchor[nodejs::repo]',
-    }) }
-    it { should contain_package('nodejs-dev') }
-    it { should contain_package('npm').with({
-      'name'    => 'npm',
-      'require' => 'Anchor[nodejs::repo]',
-    }) }
-    it { should_not contain_package('nodejs-stable-release') }
+    it { should contain_exec('node-symlink-bin-latest') \
+      .with_command('ln -s /usr/local/node/node-latest/node /bin/node-latest') \
+      .with_unless('test -L /bin/node-latest')
+    }
   end
 
-  { 'Redhat' => 'el$releasever',
-    'CentOS' => 'el$releasever',
-    'Fedora' => 'f$releasever',
-    'Amazon' => 'amzn1'
-  }.each do |os, repo|
-    describe 'when deploying on RedHat' do
-      let :facts do
-        { :operatingsystem => os, }
-      end
+  describe 'without NPM' do
+    let(:params) {{ :with_npm => false }}
 
-      let :params do
-        { :dev_package => true, }
-      end
-
-      it { should contain_package('nodejs-stable-release').with({
-        'ensure' => 'absent',
-      }) }
-      it { should contain_yumrepo('nodejs-stable').with({
-        'baseurl'  => "http://patches.fedorapeople.org/oldnode/stable/#{repo}/$basearch/",
-        'gpgcheck' => '1',
-        'before'   => 'Anchor[nodejs::repo]',
-      }) }
-      it { should contain_package('nodejs').with({
-        'name'    => 'nodejs-compat-symlinks',
-        'require' => 'Anchor[nodejs::repo]',
-      }) }
-      it { should contain_package('npm').with({
-        'name'    => 'npm',
-        'require' => 'Anchor[nodejs::repo]',
-      }) }
-      it { should_not contain_package('nodejs-dev') }
-    end
+    it { should_not contain_exec('npm-download') }
+    it { should_not contain_exec('npm-install') }
   end
-
-  describe 'when deploying with proxy' do
-    let :facts do
-      {
-        :operatingsystem => 'Ubuntu',
-        :lsbdistcodename => 'edgy',
-      }
-    end
-
-    let :params do
-      { :proxy => 'http://proxy.puppetlabs.lan:80/' }
-    end
-
-    it { should contain_package('npm').with({
-      'name'    => 'npm',
-      'require' => 'Anchor[nodejs::repo]',
-    }) }
-    it { should contain_exec('npm_proxy').with({
-      'command' => 'npm config set proxy http://proxy.puppetlabs.lan:80/',
-      'require' => 'Package[npm]',
-    }) }
-    it { should_not contain_package('nodejs-stable-release') }
-  end
-
 end
-

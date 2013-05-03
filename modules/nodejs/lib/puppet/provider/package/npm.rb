@@ -1,11 +1,13 @@
 require 'puppet/provider/package'
 
+# Extracted from: https://github.com/puppetlabs/puppetlabs-nodejs
+# Improved to ensure 'npm' is installed before to install packages.
 Puppet::Type.type(:package).provide :npm, :parent => Puppet::Provider::Package do
-  desc "npm is package management for node.js. This provider only handles global packages."
+  desc "npm is a package management for node.js. This provider only handles global packages."
 
   has_feature :versionable
 
-  optional_commands :npm => 'npm'
+  commands :npm => 'npm'
 
   def self.npmlist
     begin

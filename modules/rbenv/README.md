@@ -21,7 +21,7 @@ You can use the module in your manifest with the following code:
 
 ```
 rbenv::install { "someuser":
-  group => 'project'
+  group => 'project',
   home  => '/project'
 }
 ```
@@ -39,7 +39,7 @@ that must be an absolute path.
 To compile a ruby interpreter, you use `rbenv::compile` as follows:
 
 ```
-rbenv::compile { "1.9.3-p194":
+rbenv::compile { "1.9.3-p327":
   user => "someuser",
   home => "/project",
 }
@@ -88,7 +88,7 @@ You can install and keep gems updated for a specific ruby interpreter:
 ```
 rbenv::gem { "unicorn":
   user => "foobarbaz",
-  ruby => "1.9.3-p194",
+  ruby => "1.9.3-p327",
 }
 ```
 
@@ -127,6 +127,15 @@ rbenv::plugin::rubybuild { "someuser":
 }
 ```
 
+## Install module from puppet forge
+
+You can install the latest release of this module by using the following
+command:
+
+```
+puppet module install alup-rbenv
+```
+
 ## Usage with Vagrant
 
 A simple way to test this module is by using the
@@ -161,4 +170,4 @@ puppet aware of the rbenvgem custom provider and type.
 
 MIT License.
 
-Copyright 2012 Andreas Loupasakis, Marcello Barnaba <vjt@openssl.it>
+Copyright 2012 Andreas Loupasakis, Marcello Barnaba <vjt@openssl.it>, Fabio Rehm

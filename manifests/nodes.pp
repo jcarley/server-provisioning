@@ -1,12 +1,72 @@
 import 'server_base'
 import 'web_production'
 
+node webprod {
+  include server::base
+
+  $run_as_user = "deployer"
+
+  package { 'vim':
+    ensure => present,
+  }
+
+  class { "nodejs":
+    version => 'v0.10.5',
+  }
+
+  user { $run_as_user:
+    ensure     => 'present',
+    password   => '$1$m.0zIADA$jeaFyrtDjivf3/lJuk4ux1',
+    shell      => '/bin/bash',
+    groups     => ['admin'],
+    home       => "/home/${run_as_user}",
+    managehome => true,
+  }
+
+  file { "/home/${run_as_user}/apps":
+    ensure  => directory,
+    owner   => "${run_as_user}",
+    group   => "${run_as_user}",
+    require => User["${run_as_user}"],
+  }
+
+  rbenv::install { "${run_as_user}":
+    group   => "${run_as_user}",
+    home    => "/home/${run_as_user}",
+    rc      => ".bashrc",
+    require => User["${run_as_user}"],
+  }
+
+  rbenv::compile { "2.0.0-p0":
+    user    => "${run_as_user}",
+    home    => "/home/${run_as_user}",
+    global  => true,
+    require => Rbenv::Install["${run_as_user}"],
+  }
+
+  class { "mongodb":
+    init         => 'upstart',
+    enable_10gen => true,
+  }
+
+  class { "ufw": }
+
+  ufw::allow { "allow-ssh-from-all":
+    port => 22,
+  }
+
+  ufw::allow { "allow-http-from-all":
+    port => 80,
+  }
+}
+
 node moshpitvm {
   include server::base
   include redis
 
   package { 'build-essential':
     ensure => installed }
+
   package { 'openssl':
     ensure => installed }
 

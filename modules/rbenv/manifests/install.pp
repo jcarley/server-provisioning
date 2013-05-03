@@ -44,4 +44,12 @@ define rbenv::install(
     path    => ['/bin', '/usr/bin', '/usr/sbin'],
     require => File["rbenv::rbenvrc ${user}"],
   }
+
+  file { "rbenv::cache-dir ${user}":
+    owner   => $user,
+    group   => $group,
+    ensure  => directory,
+    path    => "${root_path}/cache",
+    require => Exec["rbenv::checkout ${user}"]
+  }
 }
