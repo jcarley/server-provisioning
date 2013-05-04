@@ -1,3 +1,1 @@
-class ssh {
-  include ssh::params, ssh::install, ssh::config, ssh::service
-}
+# Required by Puppet for loading the module

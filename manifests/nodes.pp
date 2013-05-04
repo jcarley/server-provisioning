@@ -5,7 +5,6 @@ node webprod {
   include server::base
 
   $run_as_user = "deployer"
-  $run_as_password ='$6$DsFQAo./$bdbZyA8fvK./F9fKuR9399M82zFnx.ftKj7p9fDNQDViFffs70/.FaVYwczZqB3iTOh7CKScq2eX4f72vOtQv0'
 
   package { 'vim':
     ensure => present,
@@ -17,7 +16,6 @@ node webprod {
 
   user { $run_as_user:
     ensure     => 'present',
-    password   => $run_as_password,
     shell      => '/bin/bash',
     groups     => ['admin'],
     home       => "/home/${run_as_user}",

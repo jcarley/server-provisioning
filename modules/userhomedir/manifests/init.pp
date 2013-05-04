@@ -1,14 +1,14 @@
 
 define user_homedir ($group, $fullname, $ingroups) {
   user { "$name":
-    ensure => present,
-    comment => "$fullname",
-    gid => "$group",
-    groups => $ingroups,
+    ensure     => present,
+    comment    => "$fullname",
+    gid        => "$group",
+    groups     => $ingroups,
     membership => minimum,
-    shell => "/bin/bash",
-    home => "/home/$name",
-    require => Group[$group],
+    shell      => "/bin/bash",
+    home       => "/home/$name",
+    require    => Group[$group],
   }
 
   exec { "$name homedir":

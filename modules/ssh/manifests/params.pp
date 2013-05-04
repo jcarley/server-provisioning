@@ -1,19 +1,13 @@
 class ssh::params {
-  case $operatingsystem {
-    Solaris: {
-      $ssh_package_name = 'openssh'
-      $ssh_service_config = '/etc/ssh/sshd_config'
-      $ssh_service_name = 'sshd'
+  case $::osfamily {
+    'Debian': {
+      $service_name = 'ssh'
     }
-    /(Ubuntu|Debian)/: {
-      $ssh_package_name = 'openssh-server'
-      $ssh_service_config = '/etc/ssh/ssh_config'
-      $ssh_service_name = 'ssh'
+    'RedHat': {
+      $service_name = 'sshd'
     }
-    /(RedHat|CentOS|Fedora)/: {
-      $ssh_package_name = 'openssh-server'
-      $ssh_service_config = '/etc/ssh/sshd_config'
-      $ssh_service_name = 'ssh'
+    default: {
+      fail("Unsupported osfamily $::osfamily, currently only supports Debian and RedHat")
     }
   }
 }
