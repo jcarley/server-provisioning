@@ -14,12 +14,17 @@ node ffs-vpc-web01 {
     version => 'v0.10.5',
   }
 
+  group { "admin":
+    ensure => "present",
+  }
+
   user { $run_as_user:
     ensure     => 'present',
     shell      => '/bin/bash',
     groups     => ['admin'],
     home       => "/home/${run_as_user}",
     managehome => true,
+    require    => Group["admin"],
   }
 
   file { "/home/${run_as_user}":
