@@ -1,7 +1,7 @@
 import 'server_base'
 import 'web_production'
 
-node webprod {
+node ffs-vpc-web01 {
   include server::base
 
   $run_as_user = "deployer"
