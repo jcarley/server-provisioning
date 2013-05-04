@@ -1,0 +1,17 @@
+.git/
+.vagrant/
+bootstrap/
+rakelib/
+.DS_Store
+.rvmrc
+.gitignore
+exclude.txt
+Gemfile
+Vagrantfile
+Vagrantfile.backup
+provision.sh
+workflow.txt
+Installing MongoDB.txt
+README.md
+Rakefile
+run-puppet.sh
