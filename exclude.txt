@@ -15,3 +15,4 @@ Installing MongoDB.txt
 README.md
 Rakefile
 run-puppet.sh
+noop-run-puppet.sh
