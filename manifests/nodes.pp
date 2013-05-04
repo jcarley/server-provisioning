@@ -22,6 +22,13 @@ node ffs-vpc-web01 {
     managehome => true,
   }
 
+  file { "/home/${run_as_user}":
+    ensure  => directory,
+    owner   => $run_as_user,
+    group   => $run_as_user,
+    require => User["${run_as_user}"],
+  }
+
   file { "/home/${run_as_user}/apps":
     ensure  => directory,
     owner   => "${run_as_user}",
@@ -31,7 +38,7 @@ node ffs-vpc-web01 {
 
   ssh::user { $run_as_user:
     key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEAx/t0A139x5hD/k/mrAvcsEstchQ6NiEce4Jt5ZvyUBXEjgMUB2A9BJxwlbORLbRp+PBk37n0lEIt3hYIDbrMRQzB6mFYtlEFptmGBxlCyfgzNawwG9TotJKYro8t7w9C1nH7l2ZVDS7NwfJly+gwDoUg/6A/yE38mOhQkDY8RweFeaVE8UaOe0VP3ilyCcdMdcBW//j+6juuRhbZXkD1sDUN866I9q5ovJBDf9sBTvmWD35irb4svW9kYmVdcXj3a8XHOGN8L+bWgzkyxG3x3kqonq6sBF8q0/awVVE2c8Or9oBmeBzcw3pwwSk3ZX/ms3zlGpnBMWplFOnBrz8bdw==",
-    require => User[$run_as_user],
+    require => [ User[$run_as_user], File["/home/${run_as_user}"] ],
   }
 
   rbenv::install { "${run_as_user}":
