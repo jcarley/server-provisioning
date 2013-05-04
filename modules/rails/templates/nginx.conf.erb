@@ -1,0 +1,47 @@
+events {
+  worker_connections 1024;
+  use epoll;
+}
+
+http {
+  passenger_root /home/vagrant/.rbenv/versions/1.9.3-p392/lib/ruby/gems/1.9.1/gems/passenger-<%= passenger_version %>;
+  passenger_ruby /home/vagrant/.rbenv/versions/1.9.3-p392/bin/ruby;
+  passenger_log_level 0;
+  passenger_debug_log_file /var/log/nginx/passenger.error.log;
+
+  server_names_hash_bucket_size 64;
+
+  sendfile on;
+
+  tcp_nopush  on;
+  tcp_nodelay off;
+
+  client_body_temp_path /var/spool/nginx-client-body 1 2;
+  client_max_body_size 100m;
+
+  include /etc/nginx/conf/mime.types;
+
+  default_type application/octet-stream;
+
+  log_format main '$remote_addr - $remote_user [$time_local] '
+               '"$request" $status $body_bytes_sent "$http_
+               referer" '
+               '"$http_user_agent" "$http_x_forwarded_for"' ;
+  access_log /var/log/nginx/access.log main;
+
+  gzip on;
+  gzip_http_version 1.0;
+  gzip_comp_level 2;
+  gzip_proxied any;
+  gzip_min_length  1100;
+  gzip_buffers 16 8k;
+  gzip_types text/plain text/html text/css application/x-
+
+  javascript text/xml application/xml application/xml+rss text/
+  javascript;
+
+  gzip_disable "MSIE [1-6].(?!.*SV1)";
+  gzip_vary on;
+
+  include /etc/nginx/conf/sites-enabled/*;
+}

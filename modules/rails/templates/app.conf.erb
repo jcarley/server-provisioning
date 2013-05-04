@@ -1,0 +1,10 @@
+server {
+  listen 80;
+  root /vagrant/public;
+  server_name localhost;
+  access_log /var/log/nginx/<%= name %>.access.log;
+  error_log /var/log/nginx/<%= name %>.error.log;
+  passenger_enabled on;
+  passenger_min_instances 1;
+  rails_env development;
+}
