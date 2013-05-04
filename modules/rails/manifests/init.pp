@@ -3,7 +3,7 @@
 class rails {
   include rails::passenger
 
-  define app( $sitedomain ) {
+  define app( $sitedomain, $application_public_root) {
     include rails
 
     file { "/etc/nginx/conf/sites-available/${name}.conf":

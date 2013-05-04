@@ -1,7 +1,7 @@
 server {
   listen 80;
-  root /vagrant/public;
-  server_name localhost;
+  root <%= application_public_root %>;
+  server_name <%= sitedomain %>;
   access_log /var/log/nginx/<%= name %>.access.log;
   error_log /var/log/nginx/<%= name %>.error.log;
   passenger_enabled on;

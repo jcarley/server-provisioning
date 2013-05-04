@@ -1,8 +1,9 @@
-class rails::passenger {
+class rails::passenger($run_as_user, $ruby_version) {
 
-  $as_vagrant = 'sudo -u vagrant -H bash -l -c'
-  $home = '/home/vagrant'
-  $ruby_home = "${home}/.rbenv/versions/1.9.3-p392"
+  # $as_vagrant = 'sudo -u vagrant -H bash -l -c'
+
+  $home = "/home/${run_as_user}"
+  $ruby_home = "${home}/.rbenv/versions/${ruby_version}"
   $passenger_version = "3.0.19"
   $nginx_version = "1.2.3"
 
@@ -95,5 +96,3 @@ class rails::passenger {
   }
 
 }
-
-
