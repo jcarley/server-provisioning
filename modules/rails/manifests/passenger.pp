@@ -3,17 +3,18 @@ class rails::passenger($ruby_home) {
   $passenger_version = "3.0.19"
   $nginx_version = "1.2.3"
 
-  $passenger_dependencies = [ "build-essential",
-                              "libcurl4-openssl-dev",
-                              "libssl-dev"]
-  @package { $passenger_dependencies: ensure => installed }
+  @package { "build-essential": ensure => installed }
+  @package { "libcurl4-openssl-dev": ensure => installed }
+  @package { "libssl-dev": ensure => installed }
 
-  realize ( Package["$passenger_dependencies"] )
+  realize ( Package["build-essential"] )
+  realize ( Package["libcurl4-openssl-dev"] )
+  realize ( Package["libssl-dev"] )
 
   exec { "install-bundler":
     command => "${ruby_home}/bin/gem install bundler --no-ri --no-rdoc",
     creates => "${ruby_home}/bin/bundle",
-    require => Package[$passenger_dependencies]
+    require => [Package["build-essential"], Package["libcurl4-openssl-dev"], Package["libssl-dev"]]
   }
 
   wget::fetch { "download-nginx":
