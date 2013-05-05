@@ -6,7 +6,9 @@ class rails::passenger($ruby_home) {
   $passenger_dependencies = [ "build-essential",
                               "libcurl4-openssl-dev",
                               "libssl-dev"]
-  package { $passenger_dependencies: ensure => installed }
+  @package { $passenger_dependencies: ensure => installed }
+
+  realize { Package["$passenger_dependencies"] }
 
   exec { "install-bundler":
     command => "${ruby_home}/bin/gem install bundler --no-ri --no-rdoc",
