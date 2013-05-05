@@ -1,10 +1,12 @@
 # /home/vagrant/.rbenv/versions/1.9.3-p392/lib/ruby/gems/1.9.1/gems/passenger-4.0.0.rc6/doc/Users guide Nginx.html
 
 class rails {
-  include rails::passenger
 
-  define app( $sitedomain, $application_public_root) {
-    include rails
+  define app($ruby_home, $sitedomain) {
+
+    class { "rails::passenger":
+      ruby_home => $ruby_home
+    }
 
     file { "/etc/nginx/conf/sites-available/${name}.conf":
       content => template("rails/app.conf.erb"),
