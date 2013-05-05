@@ -9,13 +9,13 @@ class rails::passenger($ruby_home) {
 
   # realize ( Package["build-essential"] )
   realize ( Package["libcurl4-openssl-dev"] )
-  realize ( Package["libssl-dev"] )
+  # realize ( Package["libssl-dev"] )
 
   exec { "install-bundler":
     command => "${ruby_home}/bin/gem install bundler --no-ri --no-rdoc",
     creates => "${ruby_home}/bin/bundle",
     # require => [Package["build-essential"], Package["libcurl4-openssl-dev"], Package["libssl-dev"]]
-    require => [Package["libcurl4-openssl-dev"], Package["libssl-dev"]]
+    require => Package["libcurl4-openssl-dev"],
   }
 
   wget::fetch { "download-nginx":
