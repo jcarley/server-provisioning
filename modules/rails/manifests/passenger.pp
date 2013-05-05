@@ -33,7 +33,7 @@ class rails::passenger($ruby_home) {
   exec { "install-passenger":
     command => "${ruby_home}/bin/gem install passenger --version=${passenger_version} --no-ri --no-rdoc",
     unless  => "${ruby_home}/bin/gem list | /bin/grep passenger | /bin/grep ${passenger_version}",
-    require => [ Package[$passenger_dependencies], Exec["untar-nginx"] ],
+    require => [ Package["libcurl4-openssl-dev"], Exec["untar-nginx"] ],
     timeout => "-1",
   }
 
