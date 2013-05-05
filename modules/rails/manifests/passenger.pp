@@ -5,7 +5,7 @@ class rails::passenger($ruby_home) {
 
   # @package { "build-essential": ensure => installed }
   @package { "libcurl4-openssl-dev": ensure => installed }
-  @package { "libssl-dev": ensure => installed }
+  # @package { "libssl-dev": ensure => installed }
 
   # realize ( Package["build-essential"] )
   realize ( Package["libcurl4-openssl-dev"] )
