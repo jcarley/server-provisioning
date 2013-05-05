@@ -23,18 +23,18 @@ class rails {
       notify   => Exec["reload-nginx"],
     }
 
-    # file { [ "/var/www",
-      # "/var/www/${name}",
-      # "/var/www/${name}/releases",
-      # "/var/www/${name}/shared",
-      # "/var/www/${name}/shared/config",
-      # "/var/www/${name}/shared/log",
-      # "/var/www/${name}/shared/system" ]:
-      # ensure => directory,
-      # mode   => 775,
-      # owner  => "www-data",
-      # group  => "www-data",
-    # }
+    file { [ "/var/www",
+      "/var/www/${name}",
+      "/var/www/${name}/releases",
+      "/var/www/${name}/shared",
+      "/var/www/${name}/shared/config",
+      "/var/www/${name}/shared/log",
+      "/var/www/${name}/shared/system" ]:
+      ensure => directory,
+      mode   => 775,
+      owner  => "www-data",
+      group  => "www-data",
+    }
 
   }
 }

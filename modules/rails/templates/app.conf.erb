@@ -1,6 +1,6 @@
 server {
   listen 80;
-  root <%= application_public_root %>;
+  root /var/www/${name}/current/public;
   server_name <%= sitedomain %>;
   access_log /var/log/nginx/<%= name %>.access.log;
   error_log /var/log/nginx/<%= name %>.error.log;
