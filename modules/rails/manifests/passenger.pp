@@ -8,7 +8,7 @@ class rails::passenger($ruby_home) {
                               "libssl-dev"]
   @package { $passenger_dependencies: ensure => installed }
 
-  realize { Package["$passenger_dependencies"] }
+  realize ( Package["$passenger_dependencies"] )
 
   exec { "install-bundler":
     command => "${ruby_home}/bin/gem install bundler --no-ri --no-rdoc",
