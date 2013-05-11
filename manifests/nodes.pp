@@ -1,62 +1,25 @@
-import 'server_base'
-import 'web_production'
+import 'roles'
+
+#  node default {
+#    include stdlib
+#    class { java: stage => 'runtime' }
+#  }
 
 node ffs-vpc-web01 {
-  include server::base
+  include stdlib
 
   $run_as_user = "deployer"
+  $ruby_version = '2.0.0-p0'
+  $passenger_version = "4.0.2"
+  # $ruby_version = '1.9.3-p392'
 
+  class { 'roles::setup':
+    stage => 'setup',
+  }
+
+  # =========== Utilities
   package { 'vim':
     ensure => present,
-  }
-
-  class { "nodejs":
-    version => 'v0.10.5',
-  }
-
-  group { "admin":
-    ensure => "present",
-  }
-
-  user { $run_as_user:
-    ensure     => 'present',
-    shell      => '/bin/bash',
-    groups     => ['admin'],
-    home       => "/home/${run_as_user}",
-    managehome => true,
-    require    => Group["admin"],
-  }
-
-  file { "/home/${run_as_user}":
-    ensure  => directory,
-    owner   => $run_as_user,
-    group   => $run_as_user,
-    require => User["${run_as_user}"],
-  }
-
-  ssh::user { $run_as_user:
-    key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEAx/t0A139x5hD/k/mrAvcsEstchQ6NiEce4Jt5ZvyUBXEjgMUB2A9BJxwlbORLbRp+PBk37n0lEIt3hYIDbrMRQzB6mFYtlEFptmGBxlCyfgzNawwG9TotJKYro8t7w9C1nH7l2ZVDS7NwfJly+gwDoUg/6A/yE38mOhQkDY8RweFeaVE8UaOe0VP3ilyCcdMdcBW//j+6juuRhbZXkD1sDUN866I9q5ovJBDf9sBTvmWD35irb4svW9kYmVdcXj3a8XHOGN8L+bWgzkyxG3x3kqonq6sBF8q0/awVVE2c8Or9oBmeBzcw3pwwSk3ZX/ms3zlGpnBMWplFOnBrz8bdw==",
-    require => [ User[$run_as_user], File["/home/${run_as_user}"] ],
-  }
-
-  rbenv::install { "${run_as_user}":
-    group   => "${run_as_user}",
-    home    => "/home/${run_as_user}",
-    rc      => ".bashrc",
-    require => User["${run_as_user}"],
-  }
-
-  rbenv::compile { "2.0.0-p0":
-    user    => "${run_as_user}",
-    home    => "/home/${run_as_user}",
-    global  => true,
-    require => Rbenv::Install["${run_as_user}"],
-  }
-
-  rails::app { "jeffersoncarley":
-    ruby_home  => "/home/deployer/.rbenv/versions/2.0.0-p0",
-    sitedomain => "jeffersoncarley.com",
-    require    => Rbenv::Compile["2.0.0-p0"],
   }
 
   class { "mongodb":
@@ -64,15 +27,33 @@ node ffs-vpc-web01 {
     enable_10gen => true,
   }
 
-  class { "ufw": }
-
-  ufw::allow { "allow-ssh-from-all":
-    port => 22,
+  # =========== User
+  class { 'roles::app::user':
+    run_as_user => $run_as_user,
+    ssh_pub_key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAx/t0A139x5hD/k/mrAvcsEstchQ6NiEce4Jt5ZvyUBXEjgMUB2A9BJxwlbORLbRp+PBk37n0lEIt3hYIDbrMRQzB6mFYtlEFptmGBxlCyfgzNawwG9TotJKYro8t7w9C1nH7l2ZVDS7NwfJly+gwDoUg/6A/yE38mOhQkDY8RweFeaVE8UaOe0VP3ilyCcdMdcBW//j+6juuRhbZXkD1sDUN866I9q5ovJBDf9sBTvmWD35irb4svW9kYmVdcXj3a8XHOGN8L+bWgzkyxG3x3kqonq6sBF8q0/awVVE2c8Or9oBmeBzcw3pwwSk3ZX/ms3zlGpnBMWplFOnBrz8bdw==",
   }
 
-  ufw::allow { "allow-http-from-all":
-    port => 80,
+  # =========== Ruby runtime
+  class { 'roles::ruby':
+    run_as_user => $run_as_user,
+    version     => $ruby_version,
+    stage       => 'runtime',
   }
+
+  # =========== Infrastructure
+  class { 'roles::infrastructure':
+    stage => 'setup_infra',
+  }
+
+  # =========== Application
+  class { 'roles::application':
+    application_name  => 'jeffersoncarley',
+    ruby_home         => "/home/${run_as_user}/.rbenv/versions/${ruby_version}",
+    sitedomain        => 'jeffersoncarley.com',
+    passenger_version => $passenger_version,
+    stage             => 'setup_app',
+  }
+
 }
 
 node moshpitvm {

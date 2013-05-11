@@ -6,8 +6,4 @@ class server::base {
   }
   Exec["apt-update"] -> Package <| |>
 
-  group { "puppet":
-    ensure  => "present",
-  }
-
 }

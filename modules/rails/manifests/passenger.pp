@@ -1,21 +1,14 @@
-class rails::passenger($ruby_home) {
 
-  $passenger_version = "3.0.19"
-  $nginx_version = "1.2.3"
+class rails::passenger($ruby_home, $passenger_version = '4.0.2') {
 
-  # @package { "build-essential": ensure => installed }
-  @package { "libcurl4-openssl-dev": ensure => installed }
-  # @package { "libssl-dev": ensure => installed }
-
-  # realize ( Package["build-essential"] )
-  realize ( Package["libcurl4-openssl-dev"] )
-  # realize ( Package["libssl-dev"] )
+  # $passenger_version = "3.0.19"
+  # $passenger_version = "4.0.2"
+  # $nginx_version = "1.2.3"
+  $nginx_version = "1.4.1"
 
   exec { "install-bundler":
     command => "${ruby_home}/bin/gem install bundler --no-ri --no-rdoc",
     creates => "${ruby_home}/bin/bundle",
-    # require => [Package["build-essential"], Package["libcurl4-openssl-dev"], Package["libssl-dev"]]
-    require => Package["libcurl4-openssl-dev"],
   }
 
   wget::fetch { "download-nginx":
@@ -41,6 +34,8 @@ class rails::passenger($ruby_home) {
     command => "${ruby_home}/bin/passenger-install-nginx-module --auto --prefix=/opt/nginx --nginx-source-dir=/tmp/nginx-${nginx_version} --extra-configure-flags=\"--conf-path=/etc/nginx/conf/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --lock-path=/var/lock/nginx.lock --pid-path=/var/run/nginx.pid --sbin-path=/usr/sbin/nginx --with-http_gzip_static_module\"",
     user    => 'root',
     group   => 'root',
+    path      => [ "${ruby_home}/bin", '/usr/bin', '/bin', '/usr/local/bin' ],
+    logoutput => on_failure,
     creates => "/usr/sbin/nginx",
     require => Exec["install-passenger"],
     timeout => "-1",

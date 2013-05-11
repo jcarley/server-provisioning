@@ -6,11 +6,12 @@ Vagrant.configure("2") do |config|
   config.vm.provision :puppet, :module_path => "modules" do |puppet|
     puppet.manifest_file = "site.pp"
     # puppet.options = ["--verbose --debug"]
+    # puppet.options = ["--graph"]
   end
 
-  config.vm.define :webprod do |config|
+  config.vm.define :ffs_vpc_web01 do |config|
 
-    hostname = "webprod"
+    hostname = "ffs-vpc-web01"
 
     config.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id,

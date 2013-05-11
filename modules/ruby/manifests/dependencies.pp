@@ -1,4 +1,5 @@
 class ruby::dependencies {
+
   if ! defined(Package['git']) { package { 'git': ensure => present } }
 
   exec { "clone_ruby_build":
