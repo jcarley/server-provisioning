@@ -4,7 +4,7 @@ events {
 }
 
 http {
-  passenger_root <%= ruby_home %>/lib/ruby/gems/1.9.1/gems/passenger-<%= passenger_version %>;
+  passenger_root <%= %x(#{ruby_home}/bin/passenger-config --root).chomp %>;
   passenger_ruby <%= ruby_home %>/bin/ruby;
   passenger_log_level 0;
   passenger_debug_log_file /var/log/nginx/passenger.error.log;
