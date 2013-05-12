@@ -82,7 +82,7 @@ class rails::passenger($ruby_home, $passenger_version = '4.0.2') {
   file { "/etc/nginx/conf/nginx.conf":
     content  => template("rails/nginx.conf.erb"),
     notify   => Exec["reload-nginx"],
-    require  => Service["nginx"],
+    require  => [ Service["nginx"], Exec["install-passenger-nginx-module"] ],
   }
 
 }
