@@ -60,13 +60,20 @@ class roles::infrastructure {
   }
 }
 
-class roles::application($application_name, $ruby_home, $sitedomain, $passenger_version = '4.0.2') {
+class roles::application(
+  $passenger_version = '4.0.2',
+  $ruby_home,
+  $gem_path,
+  $application_name,
+  $sitedomain,
+) {
 
   rails::app { $application_name:
+    passenger_version => $passenger_version,
     ruby_home         => $ruby_home,
+    gem_path          => $gem_path,
     sitedomain        => $sitedomain,
     runstage          => $stage,
-    passenger_version => $passenger_version,
   }
 
   class { "nodejs":

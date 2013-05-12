@@ -5,7 +5,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision :puppet, :module_path => "modules" do |puppet|
     puppet.manifest_file = "site.pp"
-    puppet.options = ["--verbose --debug"]
+    # puppet.options = ["--verbose --debug"]
     # puppet.options = ["--graph"]
   end
 

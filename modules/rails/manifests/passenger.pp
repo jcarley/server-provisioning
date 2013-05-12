@@ -1,10 +1,18 @@
-class rails::passenger($ruby_home, $passenger_version = '4.0.2') {
+class rails::passenger(
+  $passenger_version = '4.0.2',
+  $nginx_version = "1.4.1",
+  $ruby_home,
+  $gem_path
+) {
   include rails::service
 
   # $passenger_version = "3.0.19"
   # $passenger_version = "4.0.2"
   # $nginx_version = "1.2.3"
-  $nginx_version = "1.4.1"
+  # $passenger_root = "${ruby_home}/lib/ruby/gems/${ruby_version}/gems/passenger-${passenger_version}"
+  # passenger_root <%= ruby_home %>/lib/ruby/gems/1.9.1/gems/passenger-<%= passenger_version %>;
+  $passenger_root = "${gem_path}/passenger-${passenger_version}"
+  $passenger_ruby = "${ruby_home}/bin/ruby"
 
   exec { "install-bundler":
     command => "${ruby_home}/bin/gem install bundler --no-ri --no-rdoc",
@@ -23,7 +31,6 @@ class rails::passenger($ruby_home, $passenger_version = '4.0.2') {
     require => Wget::Fetch["download-nginx"]
   }
 
-  # passenger_root <%= ruby_home %>/lib/ruby/gems/1.9.1/gems/passenger-<%= passenger_version %>;
   exec { "install-passenger":
     command => "${ruby_home}/bin/gem install passenger --version=${passenger_version} --no-ri --no-rdoc",
     unless  => "${ruby_home}/bin/gem list | /bin/grep passenger | /bin/grep ${passenger_version}",
