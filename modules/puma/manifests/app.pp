@@ -1,6 +1,11 @@
-define puma::app($app_path = "", $user = "", $config_file_path = "", $log_file_path = "") {
+define puma::app(
+  $app_path         = "",
+  $user             = "",
+  $config_file_path = "",
+  $ensure           = "present",
+) {
 
-  $puma_tmp = "${app_path}/tmp/puma"
+  $puma_tmp = "/tmp/puma"
   $uid = $user
 
   if $config_file_path == "" {
@@ -18,28 +23,27 @@ define puma::app($app_path = "", $user = "", $config_file_path = "", $log_file_p
     $config_file = $config_file_path
   }
 
-  if $log_file_path == "" {
-    $log_file = "${app_path}/config/puma.log"
-  } else {
-    $log_file = $log_file_path
-  }
-
-  file { [ "${app_path}/tmp",
-           "${app_path}/tmp/puma"]:
+  file { "${puma_tmp}",
     ensure  => directory,
   }
 
-  exec { add_app:
-    command => "/etc/init.d/puma add ${app_path} ${uid} ${config_file} ${log_file}",
-    unless  => "grep ${app_path} /etc/puma.conf",
-    path    => $path,
-    require => [ File["${app_path}/tmp/puma"],
-                 File[$config_file] ],
+  if $ensure == "present" {
+    exec { add_app:
+      command => "echo ${app_path} >> /etc/puma.conf",
+      user    => 'root',
+      group   => 'root',
+      unless  => "grep -q ${app_path} /etc/puma.conf",
+      path    => [$path, '/bin', '/usr/bin', '/usr/sbin'],
+      require => File[$config_file],
+    }
+  } else {
+    # exec { remove_app:
+      # command => "/etc/init.d/puma add ${app_path} ${uid} ${config_file}",
+      # unless  => "grep ${app_path} /etc/puma.conf",
+      # path    => $path,
+      # require => [ File["${app_path}/tmp/puma"],
+                   # File[$config_file] ],
+    # }
   }
 
-  # This is here for future use
-  # exec { remove_app:
-    # command     => "/etc/init.d/puma remove ${app_path}",
-    # refreshonly => true,
-  # }
 }
