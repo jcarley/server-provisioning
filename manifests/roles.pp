@@ -22,6 +22,7 @@ class roles::ruby($run_as_user, $version = '2.0.0-p0') {
 }
 
 class roles::app::user($run_as_user, $ssh_pub_key) {
+
   group { "admin":
     ensure => "present",
   }
