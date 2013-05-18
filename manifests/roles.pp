@@ -60,10 +60,11 @@ class roles::infrastructure {
   }
 }
 
-class roles::www::puma
+class roles::www::puma($ruby_home)
 {
-  include roles::www::nodejs
-
+  class { "puma::install":
+    ruby_home => $ruby_home,
+  }
 }
 
 class roles::www::passenger(
@@ -73,8 +74,6 @@ class roles::www::passenger(
   $application_name,
   $sitedomain
 ) {
-  include roles::www::nodejs
-
   rails::app { $application_name:
     passenger_version => $passenger_version,
     ruby_home         => $ruby_home,
@@ -82,10 +81,9 @@ class roles::www::passenger(
     sitedomain        => $sitedomain,
     runstage          => $stage,
   }
-
 }
 
-class roles::www::nodejs(
+class roles::www::node(
   $version = 'v0.10.5'
 ) {
   class { "nodejs":
