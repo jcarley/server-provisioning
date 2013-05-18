@@ -37,13 +37,11 @@ define puma::app(
       require => File[$config_file],
     }
   } else {
-    # exec { remove_app:
-      # command => "/etc/init.d/puma add ${app_path} ${uid} ${config_file}",
-      # unless  => "grep ${app_path} /etc/puma.conf",
-      # path    => $path,
-      # require => [ File["${app_path}/tmp/puma"],
-                   # File[$config_file] ],
-    # }
+    exec { remove_app:
+      command => "sed -e \"/${app_path}/d\" /etc/puma.conf > /etc/puma.conf",
+      onlyif  => "grep -q ${app_path} /etc/puma.conf",
+      path    => [$path, '/bin', '/usr/bin', '/usr/sbin'],
+    }
   }
 
 }
