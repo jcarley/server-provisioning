@@ -60,13 +60,20 @@ class roles::infrastructure {
   }
 }
 
-class roles::application(
+class roles::www::puma
+{
+  include roles::www::nodejs
+
+}
+
+class roles::www::passenger(
   $passenger_version = '4.0.2',
   $ruby_home,
   $gem_path,
   $application_name,
-  $sitedomain,
+  $sitedomain
 ) {
+  include roles::www::nodejs
 
   rails::app { $application_name:
     passenger_version => $passenger_version,
@@ -76,10 +83,13 @@ class roles::application(
     runstage          => $stage,
   }
 
-  class { "nodejs":
-    version => 'v0.10.5',
-    stage   => $stage,
-  }
-
 }
 
+class roles::www::nodejs(
+  $version = 'v0.10.5'
+) {
+  class { "nodejs":
+    version => $version,
+    stage   => $stage,
+  }
+}

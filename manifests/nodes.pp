@@ -5,6 +5,7 @@ node ffs-vpc-web01 {
 
   $run_as_user = "deployer"
   $passenger_version = "4.0.2"
+  # $ruby_version = 'jruby-1.7.4'
   $ruby_version = '2.0.0-p0'
   # $ruby_version = '1.9.3-p392'
   $ruby_home = "/home/${run_as_user}/.rbenv/versions/${ruby_version}"
@@ -15,6 +16,10 @@ node ffs-vpc-web01 {
 
   # =========== Utilities
   package { 'vim':
+    ensure => present,
+  }
+
+  package { 'openjdk-7-jdk':
     ensure => present,
   }
 
@@ -42,10 +47,10 @@ node ffs-vpc-web01 {
   }
 
   # =========== Application
-  class { 'roles::application':
+  class { 'roles::www::passenger':
     passenger_version => $passenger_version,
     ruby_home         => $ruby_home,
-    gem_path          => "${ruby_home}/lib/ruby/gems/2.0.0/gems",
+    gem_path          => "${ruby_home}/lib/ruby/gems/shared/gems",
     application_name  => 'jeffersoncarley',
     sitedomain        => 'jeffersoncarley.com',
     stage             => 'setup_app',

@@ -6,11 +6,6 @@ class rails::passenger(
 ) {
   include rails::service
 
-  # $passenger_version = "3.0.19"
-  # $passenger_version = "4.0.2"
-  # $nginx_version = "1.2.3"
-  # $passenger_root = "${ruby_home}/lib/ruby/gems/${ruby_version}/gems/passenger-${passenger_version}"
-  # passenger_root <%= ruby_home %>/lib/ruby/gems/1.9.1/gems/passenger-<%= passenger_version %>;
   $passenger_root = "${gem_path}/passenger-${passenger_version}"
   $passenger_ruby = "${ruby_home}/bin/ruby"
 
@@ -34,6 +29,7 @@ class rails::passenger(
   exec { "install-passenger":
     command => "${ruby_home}/bin/gem install passenger --version=${passenger_version} --no-ri --no-rdoc",
     unless  => "${ruby_home}/bin/gem list | /bin/grep passenger | /bin/grep ${passenger_version}",
+    path      => [$path, "${ruby_home}/bin", '/usr/bin', '/bin', '/usr/local/bin' ],
     require => [ Package["libcurl4-openssl-dev"], Exec["untar-nginx"] ],
     timeout => "-1",
   }
@@ -42,7 +38,7 @@ class rails::passenger(
     command => "${ruby_home}/bin/passenger-install-nginx-module --auto --prefix=/opt/nginx --nginx-source-dir=/tmp/nginx-${nginx_version} --extra-configure-flags=\"--conf-path=/etc/nginx/conf/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --lock-path=/var/lock/nginx.lock --pid-path=/var/run/nginx.pid --sbin-path=/usr/sbin/nginx --with-http_gzip_static_module\"",
     user    => 'root',
     group   => 'root',
-    path      => [ "${ruby_home}/bin", '/usr/bin', '/bin', '/usr/local/bin' ],
+    path      => [$path, "${ruby_home}/bin", '/usr/bin', '/bin', '/usr/local/bin' ],
     logoutput => on_failure,
     creates => "/usr/sbin/nginx",
     require => Exec["install-passenger"],
