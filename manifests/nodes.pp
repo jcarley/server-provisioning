@@ -47,23 +47,23 @@ node ffs-vpc-web01 {
   }
 
   # =========== Application
-  class { 'roles::www::puma':
-    ruby_home => $ruby_home,
-    stage     => 'setup_app',
-  }
+  # class { 'roles::www::puma':
+    # ruby_home => $ruby_home,
+    # stage     => 'setup_app',
+  # }
 
   class { 'roles::www::node':
     stage => 'setup_app',
   }
 
-  # class { 'roles::www::passenger':
-    # passenger_version => $passenger_version,
-    # ruby_home         => $ruby_home,
-    # gem_path          => "${ruby_home}/lib/ruby/gems/shared/gems",
-    # application_name  => 'jeffersoncarley',
-    # sitedomain        => 'jeffersoncarley.com',
-    # stage             => 'setup_app',
-  # }
+  class { 'roles::www::passenger':
+    passenger_version => $passenger_version,
+    ruby_home         => $ruby_home,
+    gem_path          => "${ruby_home}/lib/ruby/gems/shared/gems",
+    application_name  => 'jeffersoncarley',
+    sitedomain        => 'jeffersoncarley.com',
+    stage             => 'setup_app',
+  }
 
 }
 

@@ -1,39 +1,34 @@
 define passenger::app(
-  $passenger_version = "4.0.2",
-  $nginx_version     = '1.4.1',
-  $ruby_home,
-  $gem_path,
-  $sitedomain,
-  $runstage,
+  $sitedomain
 ) {
 
   include passenger::service
 
-  file { "/etc/nginx/conf/sites-available/${application_name}.conf":
+  file { "/etc/nginx/conf/sites-available/${name}.conf":
     alias   => 'site-available',
     content => template("rails/app.conf.erb"),
   }
 
-  file { "/etc/nginx/conf/sites-enabled/${application_name}.conf":
+  file { "/etc/nginx/conf/sites-enabled/${name}.conf":
     alias   => 'site-enabled',
     ensure  => link,
-    target  => "/etc/nginx/conf/sites-available/${application_name}.conf",
+    target  => "/etc/nginx/conf/sites-available/${name}.conf",
     require => File["site-available"],
     notify  => Exec["reload-nginx"],
   }
 
-  file { "/etc/nginx/conf/includes/${application_name}.conf":
-    source   => [ "puppet:///modules/rails/${application_name}.conf", "puppet:///modules/rails/empty.conf" ],
+  file { "/etc/nginx/conf/includes/${name}.conf":
+    source   => [ "puppet:///modules/rails/${name}.conf", "puppet:///modules/rails/empty.conf" ],
     notify   => Exec["reload-nginx"],
   }
 
   file { [ "/var/www",
-  "/var/www/${application_name}",
-  "/var/www/${application_name}/releases",
-  "/var/www/${application_name}/shared",
-  "/var/www/${application_name}/shared/config",
-  "/var/www/${application_name}/shared/log",
-  "/var/www/${application_name}/shared/system" ]:
+  "/var/www/${name}",
+  "/var/www/${name}/releases",
+  "/var/www/${name}/shared",
+  "/var/www/${name}/shared/config",
+  "/var/www/${name}/shared/log",
+  "/var/www/${name}/shared/system" ]:
     ensure => directory,
     mode   => 775,
     owner  => "www-data",

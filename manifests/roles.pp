@@ -75,10 +75,15 @@ class roles::www::passenger(
   $application_name,
   $sitedomain
 ) {
-  rails::app { $application_name:
+
+  class { 'passenger::install':
     passenger_version => $passenger_version,
     ruby_home         => $ruby_home,
     gem_path          => $gem_path,
+    stage             => $stage,
+  }
+
+  passenger::app { $application_name:
     sitedomain        => $sitedomain,
     runstage          => $stage,
   }
