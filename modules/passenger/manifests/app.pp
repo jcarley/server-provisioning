@@ -1,5 +1,13 @@
-class rails::enable($application_name, $sitedomain) {
-  include rails::service
+define passenger::app(
+  $passenger_version = "4.0.2",
+  $nginx_version     = '1.4.1',
+  $ruby_home,
+  $gem_path,
+  $sitedomain,
+  $runstage,
+) {
+
+  include passenger::service
 
   file { "/etc/nginx/conf/sites-available/${application_name}.conf":
     alias   => 'site-available',
@@ -31,4 +39,7 @@ class rails::enable($application_name, $sitedomain) {
     owner  => "www-data",
     group  => "www-data",
   }
+
+  }
 }
+

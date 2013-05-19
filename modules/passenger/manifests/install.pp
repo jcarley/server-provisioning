@@ -1,10 +1,10 @@
-class rails::passenger(
+class passenger::install(
   $passenger_version = '4.0.2',
   $nginx_version = "1.4.1",
   $ruby_home,
   $gem_path
 ) {
-  include rails::service
+  include passenger::service
 
   $passenger_root = "${gem_path}/passenger-${passenger_version}"
   $passenger_ruby = "${ruby_home}/bin/ruby"
