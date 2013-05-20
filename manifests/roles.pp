@@ -85,7 +85,6 @@ class roles::www::passenger(
 
   passenger::app { $application_name:
     sitedomain        => $sitedomain,
-    runstage          => $stage,
   }
 }
 

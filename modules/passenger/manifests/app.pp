@@ -6,7 +6,7 @@ define passenger::app(
 
   file { "/etc/nginx/conf/sites-available/${name}.conf":
     alias   => 'site-available',
-    content => template("rails/app.conf.erb"),
+    content => template("passenger/app.conf.erb"),
   }
 
   file { "/etc/nginx/conf/sites-enabled/${name}.conf":
@@ -35,6 +35,5 @@ define passenger::app(
     group  => "www-data",
   }
 
-  }
 }
 

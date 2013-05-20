@@ -5,8 +5,8 @@ node ffs-vpc-web01 {
 
   $run_as_user = "deployer"
   $passenger_version = "4.0.2"
-  $ruby_version = 'jruby-1.7.4'
-  # $ruby_version = '2.0.0-p0'
+  # $ruby_version = 'jruby-1.7.4'
+  $ruby_version = '2.0.0-p0'
   # $ruby_version = '1.9.3-p392'
   $ruby_home = "/home/${run_as_user}/.rbenv/versions/${ruby_version}"
 
@@ -19,9 +19,9 @@ node ffs-vpc-web01 {
     ensure => present,
   }
 
-  package { 'openjdk-7-jdk':
-    ensure => present,
-  }
+  # package { 'openjdk-7-jdk':
+    # ensure => present,
+  # }
 
   class { "mongodb":
     init         => 'upstart',
