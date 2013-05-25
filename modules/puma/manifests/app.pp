@@ -23,24 +23,21 @@ define puma::app(
     $config_file = $config_file_path
   }
 
-  file { "${puma_tmp}",
+  file { "${puma_tmp}":
     ensure  => directory,
   }
 
   if $ensure == "present" {
-    exec { add_app:
-      command => "echo ${app_path} >> /etc/puma.conf",
-      user    => 'root',
-      group   => 'root',
-      unless  => "grep -q ${app_path} /etc/puma.conf",
-      path    => [$path, '/bin', '/usr/bin', '/usr/sbin'],
+    line { "add-app ${app_path}":
+      file => "/etc/puma.conf",
+      line => $app_path,
       require => File[$config_file],
     }
   } else {
-    exec { remove_app:
-      command => "sed -e \"/${app_path}/d\" /etc/puma.conf > /etc/puma.conf",
-      onlyif  => "grep -q ${app_path} /etc/puma.conf",
-      path    => [$path, '/bin', '/usr/bin', '/usr/sbin'],
+    line { "remove-app ${app_path}":
+      file    => "/etc/puma.conf",
+      line => $app_path,
+      require => File[$config_file],
     }
   }
 

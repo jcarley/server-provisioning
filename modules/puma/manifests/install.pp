@@ -1,13 +1,4 @@
-
 class puma::install($ruby_home = '') {
-
-  exec { "${ruby_home} gem install puma":
-    command => "${ruby_home}/bin/gem install puma",
-    path    => ["${ruby_home}/bin", $path],
-    creates => "${ruby_home}/bin/puma",
-    user    => 'root',
-    group   => 'root',
-  }
 
   file { '/etc/init/puma-manager.conf':
     alias   => install_puma_service_manager,
@@ -15,7 +6,6 @@ class puma::install($ruby_home = '') {
     source  => "puppet:///modules/puma/puma-manager.conf",
     owner   => 'root',
     group   => 'root',
-    require => Exec["${ruby_home} gem install puma"],
   }
 
   file { '/etc/init/puma.conf':
@@ -24,12 +14,10 @@ class puma::install($ruby_home = '') {
     source  => "puppet:///modules/puma/puma.conf",
     owner   => 'root',
     group   => 'root',
-    require => Exec["${ruby_home} gem install puma"],
   }
 
   file { '/etc/puma.conf':
     ensure  => present,
-    require => Exec["${ruby_home} gem install puma"],
   }
 
 }
