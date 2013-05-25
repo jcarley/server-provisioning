@@ -1,9 +1,9 @@
 server {
   listen 80;
-  root /var/www/<%= application_name %>/current/public;
+  root /var/www/<%= name %>/current/public;
   server_name <%= sitedomain %>;
-  access_log /var/log/nginx/<%= application_name %>.access.log;
-  error_log /var/log/nginx/<%= application_name %>.error.log;
+  access_log /var/log/nginx/<%= name %>.access.log;
+  error_log /var/log/nginx/<%= name %>.error.log;
   passenger_enabled on;
   passenger_min_instances 1;
   rails_env development;

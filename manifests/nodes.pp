@@ -4,10 +4,10 @@ node ffs-vpc-web01 {
   include stdlib
 
   $run_as_user = "deployer"
-  $passenger_version = "4.0.2"
   $ruby_version = 'jruby-1.7.4'
   # $ruby_version = '2.0.0-p0'
   # $ruby_version = '1.9.3-p392'
+  # $passenger_version = "4.0.2"
   $ruby_home = "/home/${run_as_user}/.rbenv/versions/${ruby_version}"
 
   class { 'roles::setup': }

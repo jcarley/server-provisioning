@@ -4,6 +4,7 @@ class passenger::install(
   $ruby_home,
   $gem_path
 ) {
+  include passenger::dependencies
   include passenger::service
 
   $passenger_root = "${gem_path}/passenger-${passenger_version}"
@@ -83,7 +84,7 @@ class passenger::install(
   }
 
   file { "/etc/nginx/conf/nginx.conf":
-    content  => template("rails/nginx.conf.erb"),
+    content  => template("passenger/nginx.conf.erb"),
     notify   => Exec["reload-nginx"],
     require  => [ Service["nginx"], Exec["install-passenger-nginx-module"] ],
   }
