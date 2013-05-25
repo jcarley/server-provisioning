@@ -10,16 +10,10 @@ node ffs-vpc-web01 {
   # $ruby_version = '1.9.3-p392'
   $ruby_home = "/home/${run_as_user}/.rbenv/versions/${ruby_version}"
 
-  class { 'roles::setup':
-    stage => 'setup',
-  }
+  class { 'roles::setup': }
 
-  # =========== Utilities
-  package { 'vim':
-    ensure => present,
-  }
-
-  package { 'openjdk-7-jdk':
+  # =========== Standard Packages
+  package { ['vim', 'openjdk-7-jdk']:
     ensure => present,
   }
 
@@ -38,162 +32,41 @@ node ffs-vpc-web01 {
   class { 'roles::ruby':
     run_as_user => $run_as_user,
     version     => $ruby_version,
-    stage       => 'runtime',
   }
 
   # =========== Infrastructure
-  class { 'roles::infrastructure':
-    stage => 'setup_infra',
-  }
+  class { 'roles::infrastructure': }
 
   # =========== Application
-  # class { 'roles::www::puma':
-    # ruby_home => $ruby_home,
-    # stage     => 'setup_app',
-  # }
-
-  class { 'roles::www::node':
-    stage => 'setup_app',
+  class { 'roles::www::puma':
+    ruby_home => $ruby_home,
   }
 
-  class { 'roles::www::passenger':
-    passenger_version => $passenger_version,
-    ruby_home         => $ruby_home,
-    gem_path          => "${ruby_home}/lib/ruby/gems/shared/gems",
-    application_name  => 'jeffersoncarley',
-    sitedomain        => 'jeffersoncarley.com',
-    stage             => 'setup_app',
-  }
+  class { 'roles::www::node': }
 
-}
-
-node moshpitvm {
-  include server::base
-  include redis
-
-  package { 'build-essential':
-    ensure => installed }
-
-  package { 'openssl':
-    ensure => installed }
-
-  package { "openjdk-7-jdk":
-    ensure => present,
-  }
-
-  package { "ant":
-    ensure  => present,
-    require => Package["openjdk-7-jdk"]
-  }
-
-  ruby::install { 'jruby-1.7.0':
-    current => true,
-    require => [ Package['openjdk-7-jdk'], Package['ant'] ],
-  }
-
-  class { 'trinidad':
-    jruby_home => '/opt/rubies/current',
-    require    => [ Ruby::Install['jruby-1.7.0'], Package['openjdk-7-jdk'] ]
-  }
-
-}
-
-# web server setup for vagrant
-node web01 {
-  include server::base
-  include jruby
-  include puma
-  # include web::production
-  # include nginx
-
-  package { 'vim':
-    ensure => present,
-  }
-
-  file { ['/home/vagrant/apps',
-          '/home/vagrant/apps/uploader' ]:
+  file {[ "/home/${run_as_user}/apps/",
+          "/home/${run_as_user}/apps/jeffersoncarley" ]:
     ensure => directory,
-    owner  => 'vagrant',
-    group  => 'vagrant',
-    before => Puma::App[install_app],
+    before => Puma::App['jeffersoncarley.com'],
   }
 
-  puma::app { install_app:
-    app_path => '/home/vagrant/apps/uploader',
-    user     => 'vagrant',
+  puma::app { "jeffersoncarley.com":
+    app_path => "/home/${run_as_user}/apps/jeffersoncarley",
+    user     => $run_as_user,
+    ensure   => absent,
   }
 
-  # nginx::vhost { 'www.finishfirstsoftware.com':
-    # require => File['/home/deployer/apps'],
+  # class { 'roles::www::passenger':
+    # passenger_version => $passenger_version,
+    # ruby_home         => $ruby_home,
+    # gem_path          => "${ruby_home}/lib/ruby/gems/shared/gems",
+    # application_name  => 'jeffersoncarley',
+    # sitedomain        => 'jeffersoncarley.com',
+    # stage             => 'setup_app',
   # }
-}
 
-# web server setup for linode server
-node 'localhost.members.linode.com' {
-  include server::base
-  include web::production
-  include nginx
-
-  package { "imagemagick":
-    ensure => 'present',
-  }
-
-  package { "mongodb-10gen":
-    ensure => 'present',
-  }
-
-  package { "nodejs":
-    ensure => 'present',
-  }
-
-  class { "ufw": }
-
-  ufw::allow { "allow-ssh-from-all":
-    port => 22,
-  }
-
-  ufw::allow { "allow-http-from-all":
-    port => 80,
-  }
-}
-
-node web02 {
-  include server::base
-  include apache
-
-  user { "deployer":
-    ensure     => 'present',
-    shell      => '/bin/zsh',
-    groups     => ['admin'],
-    home       => '/home/deployer',
-    managehome => true,
-  }
-
-  file { "/home/deployer/apps":
-    ensure  => directory,
-    owner   => 'deployer',
-    group   => 'deployer',
-    require => User["deployer"],
-  }
-
-  apache::vhost { 'www.example.com':
-    port          => 80,
-    docroot       => '/home/deployer/apps/www.example.com',
-    ssl           => false,
-    priority      => 10,
-    serveraliases => 'home.example.com',
-    require       => File ["/home/deployer/apps"],
-  }
-
-  class {'postgresql::server':
-    version => '9.1',
-  }
-
-  postgresql::db { 'carleyfamily_production':
-      owner    => 'carleyfamily',
-      password => 'letmein123',
-      require  => Class['postgresql::server'],
-  }
-
+  Class['roles::setup'] -> Package['openjdk-7-jdk'] -> Class['mongodb'] -> Class['roles::app::user'] ->
+    Class['roles::ruby'] -> Class['roles::infrastructure'] -> Class['roles::www::puma'] -> Class['roles::www::node'] ->
+    Puma::App['jeffersoncarley.com']
 }
 
