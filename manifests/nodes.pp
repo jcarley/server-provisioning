@@ -1,5 +1,3 @@
-import 'roles'
-
 node ffs-vpc-web01 {
   include stdlib
 

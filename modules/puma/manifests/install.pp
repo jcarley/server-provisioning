@@ -1,4 +1,4 @@
-class puma::install($ruby_home = '') {
+class puma::install($run_as_user) {
 
   file { '/etc/init/puma-manager.conf':
     alias   => install_puma_service_manager,
@@ -11,7 +11,7 @@ class puma::install($ruby_home = '') {
   file { '/etc/init/puma.conf':
     alias   => install_puma_service_config,
     ensure  => present,
-    source  => "puppet:///modules/puma/puma.conf",
+    content => template('puma/puma.conf.erb'),
     owner   => 'root',
     group   => 'root',
   }

@@ -1,11 +1,11 @@
 define puma::app(
   $app_path         = "",
   $user             = "",
+  $puma_tmp         = "/tmp/puma",
   $config_file_path = "",
   $ensure           = "present",
 ) {
 
-  $puma_tmp = "/tmp/puma"
   $uid = $user
 
   if $config_file_path == "" {
@@ -21,10 +21,6 @@ define puma::app(
 
   } else {
     $config_file = $config_file_path
-  }
-
-  file { "${puma_tmp}":
-    ensure  => directory,
   }
 
   if $ensure == "present" {

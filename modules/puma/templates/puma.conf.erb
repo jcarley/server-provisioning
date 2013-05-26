@@ -1,0 +1,28 @@
+description "Puma Background Worker"
+
+# no "start on", we don't want to automatically start
+stop on (stopping puma-manager or runlevel [06])
+
+# change apps to match your deployment user if you want to use this as a less privileged user (recommended!)
+setuid <%= run_as_user %>
+setgid <%= run_as_user %>
+
+respawn
+respawn limit 3 30
+
+instance ${app}
+
+script
+# this script runs in /bin/sh by default
+# respawn as bash so we can source in rbenv
+exec /bin/bash <<EOT
+  export HOME=/home/<%= run_as_user %>/apps
+
+  source /home/<%= run_as_user %>/.bashrc
+
+  logger -t puma "Starting server: $app"
+
+  cd $app
+  exec bundle exec puma -C config/puma.rb
+EOT
+end script
