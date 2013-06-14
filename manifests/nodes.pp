@@ -1,3 +1,57 @@
+
+node ffs-vpc-jenkins01 {
+  include stdlib
+
+  $run_as_user = "jenkins"
+  $ruby_version = 'jruby-1.7.4'
+
+  class { 'roles::setup': } ->
+
+  package { ['git', 'wget', 'curl', 'vim', 'openjdk-7-jdk']:
+    ensure => present,
+  } ->
+
+  file { "/home/${run_as_user}":
+    ensure => directory,
+  } ->
+
+  user { $run_as_user:
+    ensure   => present,
+    groups   => ['admin', 'sudo', 'adm'],
+    password => sha1('changeme'),
+    shell    => '/bin/bash',
+  } ->
+
+  class { 'jenkins': } ->
+
+  jenkins::plugin {
+    "git": ;
+    "git-client": ;
+    "ec2": ;
+    "s3": ;
+    "thinBackup": ;
+    "chucknorris": ;
+    "ansicolor": ;
+    "": ;
+  } ->
+
+  file { ["/home/${run_as_user}/jobs",
+          "/home/${run_as_user}/jobs/workspace",
+          "/home/${run_as_user}/jobs/builds" ]:
+    ensure => directory,
+    ownder => "${run_as_user}",
+    groups => "${run_as_user}",
+  } ->
+
+  class { 'roles::www::node': } ->
+
+  class { 'roles::ruby':
+    run_as_user => $run_as_user,
+    version     => $ruby_version,
+  }
+}
+
+
 node ffs-vpc-web01 {
   include stdlib
 
