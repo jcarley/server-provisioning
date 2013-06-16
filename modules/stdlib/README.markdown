@@ -195,6 +195,16 @@ Would return: ['a','c']
 
 - *Type*: rvalue
 
+dirname
+-------
+Returns the `dirname` of a path.
+
+*Examples:*
+
+    dirname('/path/to/a/file.ext')
+
+Would return: '/path/to/a'
+
 downcase
 --------
 Converts the case of a string or all strings in an array to lower case.
@@ -232,6 +242,11 @@ This example only creates the resource if it does not already exist:
 If the resource already exists but does not match the specified parameters,
 this function will attempt to recreate the resource leading to a duplicate
 resource definition error.
+
+An array of resources can also be passed in and each will be created with
+the type and parameters specified if it doesn't already exist.
+
+    ensure_resource('user', ['dan','alex'], {'ensure' => 'present'})
 
 
 
@@ -390,7 +405,7 @@ Example:
 
 hash
 ----
-This function converts and array into a hash.
+This function converts an array into a hash.
 
 *Examples:*
 
