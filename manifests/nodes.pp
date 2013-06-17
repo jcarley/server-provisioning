@@ -1,46 +1,20 @@
-
-node ffs-vpc-jenkins01 {
+node default {
   include stdlib
+  include roles::setup
+  include java
 
   $run_as_user = "jenkins"
   $ruby_version = 'jruby-1.7.4'
 
-  class { 'roles::setup': } ->
-
-  package { ['git', 'wget', 'curl', 'vim', 'openjdk-7-jdk']:
-    ensure => present,
+  package { ['git', 'wget', 'curl', 'vim']:
+    ensure => installed,
   } ->
 
-  file { "/home/${run_as_user}":
-    ensure => directory,
-  } ->
-
-  user { $run_as_user:
-    ensure   => present,
-    groups   => ['admin', 'sudo', 'adm'],
-    password => sha1('changeme'),
-    shell    => '/bin/bash',
-  } ->
-
-  class { 'jenkins': } ->
-
-  jenkins::plugin {
-    "git": ;
-    "git-client": ;
-    "ec2": ;
-    "s3": ;
-    "thinBackup": ;
-    "chucknorris": ;
-    "ansicolor": ;
-    "": ;
-  } ->
-
-  file { ["/home/${run_as_user}/jobs",
-          "/home/${run_as_user}/jobs/workspace",
-          "/home/${run_as_user}/jobs/builds" ]:
-    ensure => directory,
-    ownder => "${run_as_user}",
-    groups => "${run_as_user}",
+  roles::user { 'install_jenkins_user':
+    run_as_user   => $run_as_user,
+    password      => 'changeme',
+    primary_group => $run_as_user,
+    groups        => ['admin', 'sudo', 'adm'],
   } ->
 
   class { 'roles::www::node': } ->
@@ -48,6 +22,69 @@ node ffs-vpc-jenkins01 {
   class { 'roles::ruby':
     run_as_user => $run_as_user,
     version     => $ruby_version,
+  } ->
+
+  class { 'roles::infrastructure': }
+}
+
+node ffs-vpc-jenkins01 {
+  include stdlib
+  include roles::setup
+  include java
+
+  $run_as_user = "jenkins"
+  $ruby_version = 'jruby-1.7.4'
+
+  package { ['git', 'wget', 'curl', 'vim']:
+    ensure => installed,
+  } ->
+
+  roles::user { 'install_jenkins_user':
+    run_as_user   => $run_as_user,
+    password      => 'changeme',
+    primary_group => $run_as_user,
+    groups        => ['admin', 'sudo', 'adm'],
+  } ->
+
+  class { 'jenkins':
+    require => Class['java'],
+  } ->
+
+  file { ["/home/${run_as_user}/jobs",
+          "/home/${run_as_user}/jobs/workspace",
+          "/home/${run_as_user}/jobs/builds" ]:
+    ensure => directory,
+    owner  => "${run_as_user}",
+    group  => "${run_as_user}",
+  } ->
+
+  # class { 'roles::www::node': } ->
+
+  class { 'roles::ruby':
+    run_as_user => $run_as_user,
+    version     => $ruby_version,
+  } ->
+
+  class { 'roles::infrastructure': } ->
+
+  jenkins::plugin {
+        ["git",
+        "git-client",
+        "ec2",
+        "s3",
+        "ruby",
+        "thinBackup",
+        "chucknorris",
+        "ansicolor",
+        "copy-to-slave",
+        "nodelabelparameter",
+        "copyartifact",
+        "jquery",
+        "parameterized-trigger",
+        "token-macro",
+        "join",
+        "slave-setup"]:
+      require => Class['jenkins'],
   }
 }
 
