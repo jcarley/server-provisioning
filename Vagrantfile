@@ -9,9 +9,10 @@ Vagrant.configure("2") do |config|
     # puppet.options << ["--graph"]
   end
 
-  config.vm.define :ffs_vpc_web01 do |config|
+  config.vm.define :ffs_vpc_jenkins01 do |config|
 
-    hostname = "ffs-vpc-web01"
+    # hostname = "ffs-vpc-web01"
+    hostname = "ffs-vpc-jenkins01"
 
     config.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id,
@@ -25,10 +26,10 @@ Vagrant.configure("2") do |config|
 
     config.vm.hostname = hostname
     config.vm.box = "precise64"
-    config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
+    config.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210.box'
 
     config.vm.network :private_network, ip: "33.33.33.27"
-    config.vm.network :forwarded_port, guest: 80, host: 2727, :auto => true
+    config.vm.network :forwarded_port, guest: 8080, host: 3000, :auto => true
 
   end
 
