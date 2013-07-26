@@ -10,8 +10,8 @@ Vagrant.configure("2") do |config|
   end
 
 
-  config.vm.define :devweb01 do |config|
-    hostname = "devweb01"
+  config.vm.define :dev01 do |config|
+    hostname = "dev01"
     # hostname = "ffs-vpc-web01"
     # hostname = "ffs-vpc-jenkins01"
 

@@ -27,7 +27,7 @@ node default {
   class { 'roles::infrastructure': }
 }
 
-node devweb01 {
+node dev01 {
   include apt
   include stdlib
   include roles::infrastructure
@@ -43,20 +43,14 @@ node devweb01 {
     ensure => installed,
   }
 
-  apt::ppa { ['ppa:chris-lea/node.js', 'ppa:nginx/stable']: } ->
-
   class { 'java': } ->
-
-  class { 'roles::ruby':
-    run_as_user => $run_as_user,
-    version     => '2.0.0-p0',
-  } ->
 
   class { 'roles::database': } ->
 
   class { 'roles::www::webserver':
-    run_as_user => $run_as_user,
-    rails_env   => 'development'
+    run_as_user  => $run_as_user,
+    ruby_version => '2.0.0-p247',
+    rails_env    => 'development',
   }
 
 }
