@@ -47,6 +47,11 @@ node devweb01 {
 
   class { 'java': } ->
 
+  class { 'roles::ruby':
+    run_as_user => $run_as_user,
+    version     => '2.0.0-p0',
+  } ->
+
   class { 'roles::database': } ->
 
   class { 'roles::www::webserver':

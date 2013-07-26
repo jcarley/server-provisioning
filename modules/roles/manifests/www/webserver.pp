@@ -3,8 +3,9 @@ class roles::www::webserver (
   $rails_env,
 ){
 
-  include nodejs
   anchor { "roles::www::webserver::being": } ->
+
+  class { "nodejs": } ->
 
   class { "puma::init":
     run_as_user => $run_as_user,
