@@ -1,5 +1,6 @@
-pidfile "<%= puma_tmp %>/pid"
-state_path "<%= puma_tmp %>/state"
+pidfile "<%= @puma_tmp %>/pid"
+state_path "<%= @puma_tmp %>/state"
+bind 'tcp://127.0.0.1:<%= @port %>'
 activate_control_app
 
 threads 3, 10

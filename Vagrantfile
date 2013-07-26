@@ -5,14 +5,15 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision :puppet, :module_path => "modules" do |puppet|
     puppet.manifest_file = "site.pp"
-    # puppet.options << ["--verbose --debug"]
+    puppet.options << ["--verbose"]
     # puppet.options << ["--graph"]
   end
 
-  config.vm.define :ffs_vpc_jenkins01 do |config|
 
+  config.vm.define :devweb01 do |config|
+    hostname = "devweb01"
     # hostname = "ffs-vpc-web01"
-    hostname = "ffs-vpc-jenkins01"
+    # hostname = "ffs-vpc-jenkins01"
 
     config.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id,
@@ -27,6 +28,8 @@ Vagrant.configure("2") do |config|
     config.vm.hostname = hostname
     config.vm.box = "precise64"
     config.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210.box'
+
+    # config.vm.synced_folder "..", "/home/vagrant/apps", :nfs => true
 
     config.vm.network :private_network, ip: "33.33.33.27"
     config.vm.network :forwarded_port, guest: 8080, host: 3000, :auto => true

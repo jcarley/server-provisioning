@@ -3,6 +3,7 @@ class roles::setup {
 
   exec { "apt-update":
     command => "/usr/bin/apt-get update",
+    timeout => 0,
   }
 
   Exec['apt-update'] -> Package <| |>
