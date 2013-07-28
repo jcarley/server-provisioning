@@ -21,7 +21,12 @@ class roles::www::webserver (
   } ->
 
   package { 'nginx':
-    ensure  => present,
+    ensure => present,
+  } ->
+
+  service { 'nginx':
+    enable => true,
+    ensure => running,
   } ->
 
   class { "puma::init":
